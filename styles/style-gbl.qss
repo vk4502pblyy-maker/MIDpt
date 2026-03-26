@@ -1,0 +1,333 @@
+/* ==============================================
+   全局基础设置（核心解决字体太小问题）
+   灵感：《起风了》手绘稿的柔和质感，低饱和不刺眼
+   ============================================== */
+QWidget {
+    font-family: "Microsoft YaHei UI", "Segoe UI", sans-serif;
+    font-size: 14pt; /* 全局统一舒适字号，高分辨率屏也清晰，可直接改15pt/16pt放大 */
+    color: #504030; /* 柔和深棕色代替纯黑，不刺眼，符合手绘暖调风格 */
+    selection-background-color: #b8d8a8; /* 低饱和柔草绿选中色，无突兀感 */
+    selection-color: #ffffff;
+}
+
+/* ==============================================
+   主窗口与核心区域适配
+   ============================================== */
+QMainWindow {
+    background-color: #f5efe0; /* 统一暖米色基底，模拟旧纸张/墙面质感，比渐变更稳不突兀 */
+}
+
+/* 【重点】中间黑色图像显示区强制豁免，保证相机预览黑底不被影响 */
+#imageDisplayWidget {
+    background-color: #000000;
+    border: none;
+}
+
+/* 左侧消息栏区域 */
+#messagePanel, QTextEdit, QListWidget {
+    background-color: #fdfaf3; /* 浅纸色，和主背景有柔和层次，不跳脱 */
+    border: 1px solid #e0d5c0;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 13pt; /* 消息栏字号略小，也可改成14pt和全局统一 */
+}
+
+/* 右侧控制面板容器（如果用了QWidget做面板容器，自动适配） */
+QWidget#controlPanel {
+    background-color: #fdfaf3;
+    border: 1px solid #e0d5c0;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+/* ==============================================
+   标签文本（适配你界面里的X/Y/Z坐标、行数/列数等标签）
+   ============================================== */
+QLabel {
+    font-size: 14pt;
+    color: #504030;
+    background: transparent;
+}
+
+/* ==============================================
+   按钮样式（分普通按钮和图标按钮，适配你的界面）
+   ============================================== */
+/* 普通功能按钮 */
+QPushButton {
+    background-color: #e8ded0; /* 柔化浅木色，降低饱和度，不刺眼 */
+    border: 1px solid #d4c7b0;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-weight: 500;
+    color: #504030;
+    min-height: 24px;
+}
+QPushButton:hover {
+    background-color: #f2ebe0; /* 悬停仅提亮，不变色相，过渡自然无突兀感 */
+    border: 1px solid #b8cfe0;
+}
+QPushButton:pressed {
+    background-color: #dcd0bd; /* 按下仅加深，柔和凹陷感 */
+    border: 1px solid #b8aa93;
+}
+QPushButton:disabled {
+    background-color: #f0f0f0;
+    color: #b0b0b0;
+    border: 1px solid #e0e0e0;
+}
+
+/* 【重点】图标专用按钮（垃圾桶、相机、设置、箭头等小图标按钮） */
+QPushButton#iconButton {
+    background-color: transparent; /* 默认透明，和面板背景完全融合，不突兀 */
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 6px;
+}
+QPushButton#iconButton:hover {
+    background-color: #e8ded0; /* 悬停才出现浅背景，有反馈但不抢视觉 */
+    border: 1px solid #d4c7b0;
+}
+QPushButton#iconButton:pressed {
+    background-color: #dcd0bd;
+}
+
+/* ==============================================
+   【核心适配】数字输入框SpinBox（你界面里最多的控件）
+   ============================================== */
+QSpinBox, QDoubleSpinBox {
+    background-color: #fdfaf3; /* 浅纸色底色，和整体风格统一，替代原来突兀的红色 */
+    border: 1px solid #d4c7b0;
+    border-radius: 4px;
+    padding: 4px 8px;
+    min-height: 24px;
+    font-size: 14pt; /* 保证输入数字足够大，清晰易读 */
+}
+QSpinBox:hover, QDoubleSpinBox:hover {
+    border: 1px solid #b8cfe0; /* 悬停用淡天空蓝描边，柔和提示，无强对比 */
+}
+QSpinBox:focus, QDoubleSpinBox:focus {
+    border: 2px solid #94b8d0; /* 聚焦用低饱和天空蓝，柔和不刺眼 */
+    padding-left: 7px; /* 抵消边框变粗的位移，避免文字跳动 */
+}
+
+/* SpinBox上下箭头按钮优化 */
+QSpinBox::up-button, QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 22px;
+    border: none;
+    border-left: 1px solid #d4c7b0;
+    border-top-right-radius: 4px;
+    background-color: #e8ded0;
+}
+QSpinBox::down-button, QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 22px;
+    border: none;
+    border-left: 1px solid #d4c7b0;
+    border-bottom-right-radius: 4px;
+    background-color: #e8ded0;
+}
+QSpinBox::up-button:hover, QDoubleSpinBox::up-button:hover,
+QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover {
+    background-color: #f2ebe0;
+}
+QSpinBox::up-button:pressed, QDoubleSpinBox::up-button:pressed,
+QSpinBox::down-button:pressed, QDoubleSpinBox::down-button:pressed {
+    background-color: #dcd0bd;
+}
+
+/* 箭头图标 */
+QSpinBox::up-arrow, QDoubleSpinBox::up-arrow {
+    image: none;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 5px solid #504030;
+    width: 0;
+    height: 0;
+}
+QSpinBox::down-arrow, QDoubleSpinBox::down-arrow {
+    image: none;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #504030;
+    width: 0;
+    height: 0;
+}
+
+/* ==============================================
+   单行输入框（适配保存位置等输入框）
+   ============================================== */
+QLineEdit {
+    background-color: #fdfaf3;
+    border: 1px solid #d4c7b0;
+    border-radius: 4px;
+    padding: 5px 8px;
+    min-height: 24px;
+    font-size: 14pt;
+}
+QLineEdit:hover {
+    border: 1px solid #b8cfe0;
+}
+QLineEdit:focus {
+    border: 2px solid #94b8d0;
+    padding: 4px 7px;
+}
+
+/* ==============================================
+   下拉框QComboBox
+   ============================================== */
+QComboBox {
+    background-color: #e8ded0;
+    border: 1px solid #d4c7b0;
+    border-radius: 4px;
+    padding: 5px 8px;
+    min-height: 24px;
+    font-size: 14pt;
+}
+QComboBox:hover {
+    background-color: #f2ebe0;
+    border: 1px solid #b8cfe0;
+}
+QComboBox:focus {
+    border: 2px solid #94b8d0;
+    padding: 4px 7px;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #d4c7b0;
+}
+QComboBox::down-arrow {
+    image: none;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #504030;
+    width: 0;
+    height: 0;
+}
+QComboBox QAbstractItemView {
+    border: 1px solid #d4c7b0;
+    background-color: #fdfaf3;
+    selection-background-color: #b8d8a8;
+    selection-color: #504030;
+    font-size: 14pt;
+}
+
+/* ==============================================
+   复选框QCheckBox
+   ============================================== */
+QCheckBox {
+    spacing: 8px;
+    font-size: 13pt;
+}
+QCheckBox::indicator {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #d4c7b0;
+    border-radius: 4px;
+    background-color: #fdfaf3;
+}
+QCheckBox::indicator:hover {
+    border: 1px solid #b8cfe0;
+}
+QCheckBox::indicator:checked {
+    background-color: #b8d8a8;
+    border: 1px solid #94b8d0;
+}
+
+/* ==============================================
+   进度条QProgressBar
+   ============================================== */
+QProgressBar {
+    border: 1px solid #d4c7b0;
+    border-radius: 4px;
+    text-align: center;
+    background-color: #fdfaf3;
+    font-size: 13pt;
+    min-height: 20px;
+}
+QProgressBar::chunk {
+    background-color: #94b8d0; /* 柔和低饱和天空蓝，无突兀感 */
+    border-radius: 3px;
+}
+
+/* ==============================================
+   滑块QSlider
+   ============================================== */
+QSlider::groove:horizontal {
+    height: 8px;
+    background: #e8e8e8;
+    border-radius: 4px;
+}
+QSlider::handle:horizontal {
+    background: #e8ded0;
+    border: 2px solid #d4c7b0;
+    width: 20px;
+    height: 20px;
+    margin: -6px 0;
+    border-radius: 10px;
+}
+QSlider::handle:horizontal:hover {
+    background: #f2ebe0;
+    border: 2px solid #94b8d0;
+}
+
+/* ==============================================
+   菜单栏与状态栏
+   ============================================== */
+QMenuBar {
+    background-color: #e8ded0;
+    border-bottom: 1px solid #d4c7b0;
+    font-size: 13pt;
+}
+QMenuBar::item {
+    padding: 6px 12px;
+    background: transparent;
+}
+QMenuBar::item:selected {
+    background-color: #f2ebe0;
+    border-radius: 4px;
+}
+QMenu {
+    background-color: #fdfaf3;
+    border: 1px solid #d4c7b0;
+    font-size: 13pt;
+}
+QMenu::item {
+    padding: 6px 24px;
+}
+QMenu::item:selected {
+    background-color: #e8ded0;
+}
+
+QStatusBar {
+    background-color: #e8ded0;
+    border-top: 1px solid #d4c7b0;
+    font-size: 13pt;
+}
+QStatusBar::item {
+    border: none;
+    padding: 2px 6px;
+}
+
+/* ==============================================
+   表格与表头（备用）
+   ============================================== */
+QTableView {
+    background-color: #fdfaf3;
+    gridline-color: #e8ded0;
+    border: 1px solid #d4c7b0;
+    selection-background-color: #b8d8a8;
+    selection-color: #504030;
+}
+QHeaderView::section {
+    background-color: #e8ded0;
+    color: #504030;
+    padding: 6px;
+    border: 1px solid #d4c7b0;
+    font-weight: 500;
+    font-size: 13pt;
+}

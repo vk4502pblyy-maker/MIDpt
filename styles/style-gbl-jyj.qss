@@ -1,0 +1,318 @@
+/* ==============================================
+   全局基础设置（16pt清晰字号，全蓝色系文字）
+   核心配色：浅天青(#f0f8fb)、浅海白(#f8fbfc)、浅湖蓝(#88c0d0)、深海蓝(#2a5b6b)
+   ============================================== */
+QWidget {
+    font-family: "Microsoft YaHei UI", "Segoe UI", sans-serif;
+    font-size: 16pt;
+    color: #2a5b6b; /* 柔和深海蓝文字，替代纯黑，不刺眼 */
+    selection-background-color: #88c0d0; /* 浅湖蓝选中色，柔和无突兀 */
+    selection-color: #ffffff;
+}
+
+/* ==============================================
+   主窗口背景：柔和海洋渐变（浅天青→浅海白）
+   ============================================== */
+QMainWindow {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #f0f8fb, /* 浅天青（天空/海面），更柔和的蓝 */
+        stop:1 #f8fbfc); /* 浅海白（海岸线），接近白色但带蓝调 */
+}
+
+/* ==============================================
+   核心控件专属样式（保留objectName适配）
+   ============================================== */
+/* 图像显示区：黑底 */
+#imageDisplayWidget {
+    background-color: #000000;
+    border: none;
+}
+
+/* 左侧消息栏：浅海白基底，蓝调统一 */
+#messagePanel, QTextEdit, QListWidget {
+    background-color: #f8fbfc;
+    border: 1px solid #b4d8e4; /* 浅青蓝描边 */
+    border-radius: 4px;
+    padding: 6px;
+}
+
+/* 右侧控制面板：浅天青基底，层次柔和 */
+QWidget#controlPanel {
+    background-color: #f5f9fc;
+    border: 1px solid #b4d8e4;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+/* 图标按钮：透明悬浮（蓝色系轻盈反馈） */
+QPushButton#iconButton {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 6px;
+}
+QPushButton#iconButton:hover {
+    background-color: #f0f8fb; /* 悬停浅天青，柔和反馈 */
+    border: 1px solid #88c0d0; /* 浅湖蓝描边 */
+}
+QPushButton#iconButton:pressed {
+    background-color: #e8f4f8; /* 按下加深一点的蓝 */
+}
+
+/* ==============================================
+   标签文本（深海蓝，柔和统一）
+   ============================================== */
+QLabel {
+    font-size: 14pt;
+    color: #2a5b6b;
+    background: transparent;
+}
+
+/* ==============================================
+   普通按钮：浅海白+浅青蓝描边（全蓝系质感）
+   ============================================== */
+QPushButton {
+    background-color: #f8fbfc; /* 浅海白基底 */
+    border: 1px solid #b4d8e4; /* 浅青蓝描边 */
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-weight: 500;
+    color: #2a5b6b;
+    min-height: 24px;
+}
+QPushButton:hover {
+    background-color: #f5f9fc; /* 悬停浅天青 */
+    border: 1px solid #88c0d0; /* 浅湖蓝描边 */
+}
+QPushButton:pressed {
+    background-color: #f0f8fb; /* 按下浅天青 */
+    border: 1px solid #78b0c0; /* 稍深的湖蓝 */
+}
+QPushButton:disabled {
+    background-color: #f0f0f0;
+    color: #809098;
+    border: 1px solid #e0e0e0;
+}
+
+/* ==============================================
+   数字输入框SpinBox/DoubleSpinBox（全蓝系）
+   ============================================== */
+QSpinBox, QDoubleSpinBox {
+    background-color: #f8fbfc; /* 浅海白基底 */
+    border: 1px solid #b4d8e4; /* 浅青蓝描边 */
+    border-radius: 4px;
+    padding: 4px 8px;
+    min-height: 24px;
+    font-size: 14pt;
+    color: #2a5b6b;
+}
+QSpinBox:hover, QDoubleSpinBox:hover {
+    border: 1px solid #88c0d0; /* 悬停浅湖蓝描边 */
+}
+QSpinBox:focus, QDoubleSpinBox:focus {
+    border: 2px solid #88c0d0; /* 聚焦浅湖蓝 */
+    padding-left: 7px;
+}
+
+/* SpinBox上下箭头按钮（蓝系统一） */
+QSpinBox::up-button, QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 22px;
+    border: none;
+    border-left: 1px solid #b4d8e4;
+    border-top-right-radius: 4px;
+    background-color: #f5f9fc;
+}
+QSpinBox::down-button, QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 22px;
+    border: none;
+    border-left: 1px solid #b4d8e4;
+    border-bottom-right-radius: 4px;
+    background-color: #f5f9fc;
+}
+QSpinBox::up-button:hover, QDoubleSpinBox::up-button:hover,
+QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover {
+    background-color: #f0f8fb;
+}
+QSpinBox::up-button:pressed, QDoubleSpinBox::up-button:pressed,
+QSpinBox::down-button:pressed, QDoubleSpinBox::down-button:pressed {
+    background-color: #e8f4f8;
+}
+
+/* 箭头图标（深海蓝，和文字统一） */
+QSpinBox::up-arrow, QDoubleSpinBox::up-arrow {
+    image: none;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 5px solid #2a5b6b;
+    width: 0;
+    height: 0;
+}
+QSpinBox::down-arrow, QDoubleSpinBox::down-arrow {
+    image: none;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #2a5b6b;
+    width: 0;
+    height: 0;
+}
+
+/* ==============================================
+   单行输入框QLineEdit（蓝系统一）
+   ============================================== */
+QLineEdit {
+    background-color: #f8fbfc;
+    border: 1px solid #b4d8e4;
+    border-radius: 4px;
+    padding: 5px 8px;
+    min-height: 24px;
+    font-size: 14pt;
+}
+QLineEdit:hover {
+    border: 1px solid #88c0d0;
+}
+QLineEdit:focus {
+    border: 2px solid #88c0d0;
+    padding: 4px 7px;
+}
+
+/* ==============================================
+   下拉框QComboBox（蓝系统一）
+   ============================================== */
+QComboBox {
+    background-color: #f8fbfc;
+    border: 1px solid #b4d8e4;
+    border-radius: 4px;
+    padding: 5px 8px;
+    min-height: 24px;
+    font-size: 14pt;
+}
+QComboBox:hover {
+    background-color: #f5f9fc;
+    border: 1px solid #88c0d0;
+}
+QComboBox:focus {
+    border: 2px solid #88c0d0;
+    padding: 4px 7px;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #b4d8e4;
+}
+QComboBox::down-arrow {
+    image: none;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #2a5b6b;
+    width: 0;
+    height: 0;
+}
+QComboBox QAbstractItemView {
+    border: 1px solid #b4d8e4;
+    background-color: #f8fbfc;
+    selection-background-color: #88c0d0;
+    selection-color: #ffffff;
+    font-size: 14pt;
+}
+
+/* ==============================================
+   复选框QCheckBox（蓝系勾选）
+   ============================================== */
+QCheckBox {
+    spacing: 8px;
+    font-size: 13pt;
+}
+QCheckBox::indicator {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #b4d8e4;
+    border-radius: 4px;
+    background-color: #f8fbfc;
+}
+QCheckBox::indicator:hover {
+    border: 1px solid #88c0d0;
+}
+QCheckBox::indicator:checked {
+    background-color: #88c0d0; /* 浅湖蓝勾选，全蓝系 */
+    border: 1px solid #78b0c0;
+}
+
+/* ==============================================
+   进度条QProgressBar（蓝系进度）
+   ============================================== */
+QProgressBar {
+    border: 1px solid #b4d8e4;
+    border-radius: 4px;
+    text-align: center;
+    background-color: #f8fbfc;
+    font-size: 13pt;
+    min-height: 20px;
+}
+QProgressBar::chunk {
+    background-color: #88c0d0; /* 浅湖蓝进度条，柔和统一 */
+    border-radius: 3px;
+}
+
+/* ==============================================
+   滑块QSlider（蓝系质感）
+   ============================================== */
+QSlider::groove:horizontal {
+    height: 8px;
+    background: #f0f8fb;
+    border-radius: 4px;
+}
+QSlider::handle:horizontal {
+    background: #f8fbfc;
+    border: 2px solid #b4d8e4;
+    width: 20px;
+    height: 20px;
+    margin: -6px 0;
+    border-radius: 10px;
+}
+QSlider::handle:horizontal:hover {
+    background: #f5f9fc;
+    border: 2px solid #88c0d0;
+}
+
+/* ==============================================
+   菜单栏/状态栏（蓝系顶部/底部）
+   ============================================== */
+QMenuBar {
+    background-color: #f0f8fb;
+    border-bottom: 1px solid #b4d8e4;
+    font-size: 13pt;
+}
+QMenuBar::item {
+    padding: 6px 12px;
+    background: transparent;
+}
+QMenuBar::item:selected {
+    background-color: #f5f9fc;
+    border-radius: 4px;
+}
+QMenu {
+    background-color: #f8fbfc;
+    border: 1px solid #b4d8e4;
+    font-size: 13pt;
+}
+QMenu::item {
+    padding: 6px 24px;
+}
+QMenu::item:selected {
+    background-color: #f0f8fb;
+}
+
+QStatusBar {
+    background-color: #f0f8fb;
+    border-top: 1px solid #b4d8e4;
+    font-size: 13pt;
+}
+QStatusBar::item {
+    border: none;
+    padding: 2px 6px;
+}

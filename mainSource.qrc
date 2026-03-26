@@ -1,0 +1,122 @@
+﻿<RCC>
+    <qresource prefix="/icon">
+        <file>resource/icon/ButtonLamp/bluelamp.png</file>
+        <file>resource/icon/ButtonLamp/graylamp.png</file>
+        <file>resource/icon/ButtonLamp/greenlamp.png</file>
+        <file>resource/icon/ButtonLamp/orangelamp.png</file>
+        <file>resource/icon/ButtonLamp/wineredlamp.png</file>
+        <file>resource/icon/Save/Save_32x32.png</file>
+        <file>resource/icon/Save/SaveAll_32x32.png</file>
+        <file>resource/icon/Button/btnIcon2 (1).png</file>
+        <file>resource/icon/Button/btnIcon2 (4).png</file>
+        <file>resource/icon/Button/btnIcon2 (6).png</file>
+        <file>resource/icon/Button/btnIcon2 (7).png</file>
+        <file>resource/icon/Button/btnIcon2 (8).png</file>
+        <file>resource/icon-N/openDir.png</file>
+        <file>resource/icon-N/analysis.png</file>
+        <file>resource/icon-N/camera.png</file>
+        <file>resource/icon-N/clear.png</file>
+        <file>resource/icon-N/initDev.png</file>
+        <file>resource/icon-N/left-arr.png</file>
+        <file>resource/icon-N/loadDoc.png</file>
+        <file>resource/icon-N/radar.png</file>
+        <file>resource/icon-N/right-arr.png</file>
+        <file>resource/icon-N/saveDoc.png</file>
+        <file>resource/icon-N/stop.png</file>
+        <file>resource/icon-N/triggerEx.png</file>
+        <file>resource/icon-N/triggerIn.png</file>
+        <file>resource/icon-N/currentPos.png</file>
+        <file>resource/icon-N/Basement.png</file>
+        <file>resource/icon-N/up-arr-cir.png</file>
+        <file>resource/icon-N/down-arr-cir.png</file>
+        <file>resource/icon-N/down-arr.png</file>
+        <file>resource/icon-N/up-arr.png</file>
+        <file>resource/icon-N/load-doc-2.png</file>
+        <file>resource/icon-N/downdown-3.png</file>
+        <file>resource/icon-N/upup-3.png</file>
+        <file>resource/icon-N/cube.png</file>
+        <file>resource/icon-N/hardDev-1.png</file>
+        <file>resource/icon-N/config.png</file>
+        <file>resource/icon-N/devConfig.png</file>
+        <file>resource/icon-N/fpga.png</file>
+        <file>resource/icon-N/hardDev.png</file>
+        <file>resource/icon-N/chip.png</file>
+        <file>resource/icon-N/disconnectDev.png</file>
+        <file>resource/icon-N/connectDev.png</file>
+        <file>resource/icon-N/red-cir.png</file>
+        <file>resource/icon-N/green-cir.png</file>
+        <file>resource/icon-N/serPort.png</file>
+        <file>resource/icon-N/config (2).png</file>
+        <file>resource/icon-N/camLive.png</file>
+        <file>resource/icon-N/iconPlay.png</file>
+        <file>resource/icon-gbl/analysis.png</file>
+        <file>resource/icon-gbl/camera.png</file>
+        <file>resource/icon-gbl/clear.png</file>
+        <file>resource/icon-gbl/connectDev.png</file>
+        <file>resource/icon-gbl/currentPos.png</file>
+        <file>resource/icon-gbl/disconnectDev.png</file>
+        <file>resource/icon-gbl/down-arr.png</file>
+        <file>resource/icon-gbl/downdown-3.png</file>
+        <file>resource/icon-gbl/left-arr.png</file>
+        <file>resource/icon-gbl/loadDoc.png</file>
+        <file>resource/icon-gbl/openDir.png</file>
+        <file>resource/icon-gbl/radar.png</file>
+        <file>resource/icon-gbl/radar-off.png</file>
+        <file>resource/icon-gbl/right-arr.png</file>
+        <file>resource/icon-gbl/saveDoc.png</file>
+        <file>resource/icon-gbl/stop.png</file>
+        <file>resource/icon-gbl/stop-off.png</file>
+        <file>resource/icon-gbl/triggerEx.png</file>
+        <file>resource/icon-gbl/triggerIn.png</file>
+        <file>resource/icon-gbl/up-arr.png</file>
+        <file>resource/icon-gbl/upup-3.png</file>
+        <file>resource/icon-gbl/window.png</file>
+        <file>resource/icon-gbl/window2.png</file>
+        <file>resource/icon-N/album.png</file>
+        <file>resource/icon-N/album-off.png</file>
+        <file>resource/icon-gbl/album.png</file>
+        <file>resource/icon-gbl/album-off.png</file>
+    </qresource>
+    <qresource prefix="/icon/btnIcon">
+        <file>resource/icon/Button/btnicon (1).png</file>
+        <file>resource/icon/Button/btnicon (2).png</file>
+        <file>resource/icon/Button/btnicon (3).png</file>
+        <file>resource/icon/Button/btnicon (4).png</file>
+        <file>resource/icon/Button/btnicon (5).png</file>
+        <file>resource/icon/Button/btnicon (6).png</file>
+        <file>resource/icon/Button/btnicon (7).png</file>
+        <file>resource/icon/Button/btnicon (8).png</file>
+        <file>resource/icon/Button/btnicon (9).png</file>
+        <file>resource/icon/Button/btnicon (10).png</file>
+        <file>resource/icon/Button/btnicon (11).png</file>
+        <file>resource/icon/Button/btnicon (12).png</file>
+        <file>resource/icon/Button/btnicon (13).png</file>
+        <file>resource/icon/Button/btnicon (14).png</file>
+        <file>resource/icon/Button/btnicon (15).png</file>
+        <file>resource/icon/Button/ButtonBlack_161x81.png</file>
+        <file>resource/icon/Button/ButtonGray_161x81.png</file>
+        <file>resource/icon/Button/ButtonOrange_161x81.png</file>
+        <file>resource/icon/Button/ButtonRed_161x81.png</file>
+        <file>resource/icon/Button/btnIcon1 (1).png</file>
+        <file>resource/icon/Button/btnIcon1 (2).png</file>
+        <file>resource/icon/Button/btnIcon1 (3).png</file>
+        <file>resource/icon/Button/btnIcon1 (4).png</file>
+        <file>resource/icon/Button/btnIcon1 (5).png</file>
+        <file>resource/icon/Button/btnIcon1 (6).png</file>
+        <file>resource/icon/Button/btnIcon1 (7).png</file>
+        <file>resource/icon/Button/btnIcon1 (8).png</file>
+        <file>resource/icon/Button/btnIcon3 (1).png</file>
+        <file>resource/icon/Button/btnIcon3 (2).png</file>
+        <file>resource/icon/Button/btnIcon3 (3).png</file>
+        <file>resource/icon/Button/btnIcon3 (4).png</file>
+    </qresource>
+    <qresource prefix="/icon-gbl">
+        <file>resource/icon-gbl/window.png</file>
+        <file>resource/icon-gbl/window2.png</file>
+    </qresource>
+    <qresource prefix="/style">
+        <file>styles/style-gbl.qss</file>
+        <file>styles/style-gbl-jyj.qss</file>
+        <file>styles/style-gbl-qyqx.qss</file>
+    </qresource>
+</RCC>

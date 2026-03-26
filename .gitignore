@@ -1,0 +1,17 @@
+# C++ & Qt 忽略文件规则
+build/
+build-*/
+debug/
+release/
+*.user
+*.user.*
+*.stash
+*.obj
+*.ilk
+*.pdb
+*.exe
+*.dll
+*.so
+*.dylib
+Makefile*
+.qmake.stash

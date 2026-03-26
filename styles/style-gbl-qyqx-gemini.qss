@@ -1,0 +1,154 @@
+/* =========================================
+   全局基础设置
+========================================= */
+QWidget {
+    background-color: #F6F0E4; /* 温暖的水彩画纸基底 */
+    color: #4A3A31;            /* 柔和的深咖啡色文字 */
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    font-size: 16px;
+}
+
+/* 保证纯黑的视频/图像观测区域不受背景色影响 */
+#videoWidget, #imageViewer { 
+    background-color: #000000;
+    border: 2px solid #5C4638; /* 用较深的深木色包裹观测区 */
+}
+
+/* =========================================
+   分组框 (系统栏、右侧控制区等)
+========================================= */
+QGroupBox {
+    background-color: #EBE3D5; /* 区分层级的微深底色 */
+    border: 1px solid #8A7260; /* 吉卜力风格的手绘感棕色线条 */
+    border-radius: 6px;        /* 柔和的圆角 */
+    margin-top: 20px;          /* 为标题留出空间 */
+    padding-top: 10px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 10px;
+    top: 2px;
+    padding: 0 5px;
+    color: #C85A5A;            /* 汤屋朱红作为标题，醒目且点题 */
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* =========================================
+   按钮 (配合你的 2.5D 图标)
+========================================= */
+QPushButton {
+    background-color: #F6F0E4;
+    border: 1px solid #8A7260;
+    border-radius: 4px;
+    padding: 4px 12px;
+    color: #4A3A31;
+}
+
+QPushButton:hover {
+    background-color: #E2B65F; /* 悬浮时呈现琥珀金色 */
+    border: 1px solid #5C4638;
+    color: #FFFFFF;            /* 悬浮时文字反白 */
+}
+
+QPushButton:pressed {
+    background-color: #C85A5A; /* 点击时呈现朱红色 */
+    border: 1px solid #4A3A31;
+    color: #FFFFFF;
+}
+
+/* 如果有只带图标不带背景的扁平按钮（ToolButton） */
+QToolButton {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+QToolButton:hover {
+    background-color: #E2B65F;
+    border: 1px solid #8A7260;
+}
+
+/* =========================================
+   输入框 (行数、曝光、步进等参数输入)
+========================================= */
+QLineEdit, QSpinBox, QDoubleSpinBox {
+    background-color: #FAFCFA; /* 极浅的微青白色，提供呼吸感 */
+    border: 1px solid #A89B8C; /* 浅棕色边框 */
+    border-radius: 3px;
+    padding: 2px 4px;
+    selection-background-color: #86A696; /* 选中文本时的青璧色 (白龙/河神的色彩) */
+    color: #333333;
+}
+
+QLineEdit:focus, QSpinBox:focus, QDoubleSpinBox:focus {
+    border: 1px solid #C85A5A; /* 聚焦输入时用朱红色线条强调，引导视觉 */
+    background-color: #FFFFFF;
+}
+
+/* 调整微调框的上下箭头，使其更极简 */
+QSpinBox::up-button, QDoubleSpinBox::up-button, 
+QSpinBox::down-button, QDoubleSpinBox::down-button {
+    background-color: #EBE3D5;
+    border-left: 1px solid #A89B8C;
+}
+QSpinBox::up-button:hover, QDoubleSpinBox::up-button:hover, 
+QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover {
+    background-color: #E2B65F;
+}
+
+/* =========================================
+   复选框 (单选/平铺模式等)
+========================================= */
+QCheckBox {
+    spacing: 6px;
+    color: #4A3A31;
+}
+QCheckBox::indicator {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #8A7260;
+    border-radius: 3px;
+    background-color: #FAFCFA;
+}
+QCheckBox::indicator:checked {
+    background-color: #C85A5A; /* 选中时填充朱红 */
+    border: 1px solid #C85A5A;
+}
+
+/* =========================================
+   进度条
+========================================= */
+QProgressBar {
+    background-color: #EBE3D5;
+    border: 1px solid #8A7260;
+    border-radius: 4px;
+    text-align: center;
+    color: #4A3A31;
+}
+QProgressBar::chunk {
+    background-color: #86A696; /* 进度条使用温和的青色 */
+    border-radius: 3px;
+}
+
+/* =========================================
+   滚动条 (去除系统原生生硬感)
+========================================= */
+QScrollBar:vertical {
+    border: none;
+    background: transparent;
+    width: 10px;
+    margin: 0px;
+}
+QScrollBar::handle:vertical {
+    background: #BCAAA4;       /* 沉稳的灰棕色滑块 */
+    min-height: 20px;
+    border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover {
+    background: #8A7260;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;               /* 隐藏两端的上下小箭头，更现代简约 */
+}
