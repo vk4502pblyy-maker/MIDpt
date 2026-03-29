@@ -14,6 +14,7 @@
 #include <QLineEdit>
 #include <QEventLoop>
 #include <QSpacerItem>
+#include "view/rawimgwidget.h"
 #include "element/pbtnsingleshot.h"
 #include "element/eleiconbtn.h"
 #include "element/pbtntoggle.h"
@@ -67,6 +68,7 @@ private slots:
     void onBtnTriggerE();
     void onBtnTriggerI();
     void onCamInit();
+    void onBtnAlbum();
 
     //新版扫描V30
     void onTimerScanV30Timeout();
@@ -143,6 +145,7 @@ private:
 
     FuncDLP3500Ctl  *dmd;
     FuncPZTCtl      *pzt;
+    RawImgWidget    *imgWid = nullptr;
 
     int m_pImgInFlash;
     int m_pScanRowCur = 1;

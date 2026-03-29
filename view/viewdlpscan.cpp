@@ -194,6 +194,8 @@ ViewDLPScan::ViewDLPScan(QWidget *parent)
     connect(btnTriggerI,&EleIconBtn::clicked,this,&ViewDLPScan::onBtnTriggerI);
     connect(btnStart,&EleIconBtn::clicked,this,&ViewDLPScan::onBtnStart);
     connect(btnStop,&EleIconBtn::clicked,this,&ViewDLPScan::onBtnStop);
+    connect(btnAlbum,&PBtnSingleShot::clicked,this,&ViewDLPScan::onBtnAlbum);
+
     connect(boxColumn,QOverload<int>::of(&QSpinBox::valueChanged),
             this,&ViewDLPScan::onSpinValueChange);
     connect(boxExp,QOverload<int>::of(&QSpinBox::valueChanged),
@@ -415,6 +417,37 @@ void ViewDLPScan::onBtnTriggerI()
 void ViewDLPScan::onCamInit()
 {
     m_pcamInit = true;
+}
+
+void ViewDLPScan::onBtnAlbum()
+{
+    if(imgWid == nullptr){
+        imgWid = new RawImgWidget(this);
+        // 1. 定义过滤器：格式为 "描述文字 (*.后缀1 *.后缀2)"
+            // 如果有多个过滤器，用两个分号 ";;" 隔开
+            QString filter = "RAW Files (*.raw *.RAW);;All Files (*.*)";
+
+            // 2. 弹出文件选择对话框
+            // 参数：父窗口, 标题, 默认打开路径, 过滤器
+            QString selectedFile = QFileDialog::getOpenFileName(
+                this,
+                "选择一个RAW文件",
+                "/",
+                filter,
+                nullptr, // selectedFilter (如果不关心具体匹配了哪个过滤器，填 nullptr)
+                QFileDialog::DontUseNativeDialog // <--- 加上这个选项！
+            );
+
+            // 3. 检查用户是否取消了选择
+            if (selectedFile.isEmpty()) {
+                qDebug() << "用户取消了选择";
+                return;
+            }
+        imgWid->setFrameWH(2448,2048);
+        imgWid->setFilePath(selectedFile);
+    }
+    imgWid->show();
+
 }
 
 void ViewDLPScan::onTimerScanV30Timeout()

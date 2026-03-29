@@ -5,6 +5,7 @@
 #include <QAction>
 #include <QDateTime>
 #include <QMetaObject>
+#include <IO/txtio.h>
 
 #pragma execution_character_set(push, "utf-8")
 
@@ -21,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowIcon(QIcon(":/icon-gbl/resource/icon-gbl/window2.png"));
 
     funcMoveWM = FuncMoveWM::getInstance();
+    rawReader = new RawReader(this);
 
 
     viewTitleMsgBox = new ViewTitleMsgBox;
@@ -286,6 +288,7 @@ void MainWindow::onDlp4500ScanStop()
 
 void MainWindow::devInit()
 {
+    TxtIO::ReadATxt("./Camera_Parameter");
 
 }
 

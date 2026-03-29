@@ -11,6 +11,7 @@
 #include "function/funcmovewm.h"
 #include "function/camerathread.h"
 #include "view/videowidget.h"
+#include "function/rawreader.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -91,6 +92,7 @@ private:
     VideoWidget *m_videoWidget;
 
     FuncMoveWM  *funcMoveWM;
+    RawReader *rawReader;
     CameraThread *m_cameraThread;
     QPixmap camPixmap;
 

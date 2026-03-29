@@ -33,9 +33,11 @@ SOURCES += \
     function/functcpclient.cpp \
     function/functionmovement.cpp \
     function/functionmovesl.cpp \
+    function/rawreader.cpp \
     function/storagethread.cpp \
     main.cpp \
     mainwindow.cpp \
+    view/rawimgwidget.cpp \
     view/videowidget.cpp \
     view/viewdlp4500scan.cpp \
     view/viewdlpc350scan.cpp \
@@ -65,8 +67,10 @@ HEADERS += \
     function/functcpclient.h \
     function/functionmovement.h \
     function/functionmovesl.h \
+    function/rawreader.h \
     function/storagethread.h \
     mainwindow.h \
+    view/rawimgwidget.h \
     view/videowidget.h \
     view/viewdlp4500scan.h \
     view/viewdlpc350scan.h \
