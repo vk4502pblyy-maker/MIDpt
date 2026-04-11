@@ -2,17 +2,20 @@
 #include <QCoreApplication>
 
 #pragma execution_character_set(push, "utf-8")
-QMutex FuncMoveWM::mutex;
-QScopedPointer<FuncMoveWM>  FuncMoveWM::instance;
+//QMutex FuncMoveWM::mutex;
+//QScopedPointer<FuncMoveWM>  FuncMoveWM::instance;
 FuncMoveWM *FuncMoveWM::getInstance()
 {
-    if (instance.isNull()) {
-        QMutexLocker locker(&mutex);
-        if (instance.isNull()) {
-            instance.reset(new FuncMoveWM);
-        }
-    }
-    return instance.data();
+//    if (instance.isNull()) {
+//        QMutexLocker locker(&mutex);
+//        if (instance.isNull()) {
+//            instance.reset(new FuncMoveWM);
+//        }
+//    }
+//    return instance.data();
+    static FuncMoveWM instance;
+
+    return &instance;
 }
 
 int FuncMoveWM::openDev(QString comPort, quint16 port)
@@ -25,6 +28,7 @@ int FuncMoveWM::openDev(QString comPort, quint16 port)
         return -1;
     }
     tcpMove->sendMessage("InitDev_"+comPort);
+    m_ComPort = comPort;
     return 0;
 }
 
@@ -39,6 +43,11 @@ int FuncMoveWM::moveRelative(Axis node, double pos)
 {
     QString msg = "RelativeMove_"+QString::number(node)+","+QString::number(pos);
     tcpMove->sendMessage(msg);
+    return 0;
+}
+
+int FuncMoveWM::reconnect()
+{
     return 0;
 }
 

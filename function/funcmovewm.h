@@ -24,6 +24,7 @@ public:
     int openDev(QString comPort,quint16 port=0);
     int moveAbsolute(Axis node,double pos);
     int moveRelative(Axis node,double pos);
+    int reconnect();
 
 signals:
     void sigError(QString msg);
@@ -41,11 +42,12 @@ private:
     int wait4Server(QString keyWord);
 
 private:
-    static QMutex                       mutex;
-    static QScopedPointer<FuncMoveWM>   instance;
+//    static QMutex                       mutex;
+//    static QScopedPointer<FuncMoveWM>   instance;
     QEventLoop  loopTcp;
     QTimer      timerQuit;
-    QString     m_pServerMsg;
+    QString     m_pServerMsg = "";
+    QString     m_ComPort = "";
 
     QElapsedTimer   eTimerServer;
 

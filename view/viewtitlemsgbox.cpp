@@ -19,7 +19,7 @@ ViewTitleMsgBox::ViewTitleMsgBox(QWidget *parent)
 
     QHBoxLayout *layout1 = new QHBoxLayout;
     mainLayout->addLayout(layout1);
-    btnClear = new EleIconBtn(":/icon/resource/icon-gbl/clear.png",64,64,"清空消息栏");
+    btnClear = new EleIconBtn(":/icon/resource/icon-line2D/clear.png",64,64,"清空消息栏");
     layout1->addWidget(new QLabel("消息栏"));
     layout1->addItem(new QSpacerItem(0,0,QSizePolicy::Expanding,QSizePolicy::Minimum));
     layout1->addWidget(btnClear);

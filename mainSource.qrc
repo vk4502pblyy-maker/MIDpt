@@ -77,6 +77,29 @@
         <file>resource/icon-gbl/album.png</file>
         <file>resource/icon-gbl/album-off.png</file>
         <file>resource/icon-gbl/play.png</file>
+        <file>resource/icon-line2D/album.png</file>
+        <file>resource/icon-line2D/analysis.png</file>
+        <file>resource/icon-line2D/camera.png</file>
+        <file>resource/icon-line2D/clear.png</file>
+        <file>resource/icon-line2D/connectDev.png</file>
+        <file>resource/icon-line2D/currentPos.png</file>
+        <file>resource/icon-line2D/down-arr.png</file>
+        <file>resource/icon-line2D/downdown-3.png</file>
+        <file>resource/icon-line2D/left-arr.png</file>
+        <file>resource/icon-line2D/loadDoc.png</file>
+        <file>resource/icon-line2D/openDir.png</file>
+        <file>resource/icon-line2D/play.png</file>
+        <file>resource/icon-line2D/radar.png</file>
+        <file>resource/icon-line2D/radar-off.png</file>
+        <file>resource/icon-line2D/right-arr.png</file>
+        <file>resource/icon-line2D/saveDoc.png</file>
+        <file>resource/icon-line2D/stop.png</file>
+        <file>resource/icon-line2D/triggerEx.png</file>
+        <file>resource/icon-line2D/triggerIn.png</file>
+        <file>resource/icon-line2D/up-arr.png</file>
+        <file>resource/icon-line2D/upup-3.png</file>
+        <file>resource/icon-line2D/album-off.png</file>
+        <file>resource/icon-line2D/disconnectDev.png</file>
     </qresource>
     <qresource prefix="/icon/btnIcon">
         <file>resource/icon/Button/btnicon (1).png</file>

@@ -345,7 +345,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     QApplication::setStyle(QStyleFactory::create("Fusion"));
     // 加载样式表
-    QFile file("./styles/style-gbl-qyqx.qss"); // 或者使用绝对/相对路径
+    QFile file("./styles/style-line2D-SCI.qss"); // 或者使用绝对/相对路径
     if (file.open(QFile::ReadOnly | QFile::Text)) {
         QTextStream ts(&file);
         QString style = ts.readAll();

@@ -19,7 +19,7 @@ viewFloatConfig::viewFloatConfig(QWidget *parent)
     setWindowTitle("设备控制台"); // 标题栏文本
     this->resize(150,300);
     m_pCamInit = false;
-    m_pStyle = "gbl";
+    m_pStyle = "line2D";
     QGridLayout *mainLayout = new QGridLayout;
     this->setLayout(mainLayout);
 
@@ -57,6 +57,24 @@ viewFloatConfig::viewFloatConfig(QWidget *parent)
         esBtnPZT = new EleIconBtn(":/icon/resource/icon-gbl/disconnectDev.png",64,64,"点击以连接");
         esBtnPZT->setStatusIcon({":/icon/resource/icon-gbl/disconnectDev.png",
                                  ":/icon/resource/icon-gbl/connectDev.png"},
+                                {"连接","断开连接"});
+    }
+    else if(m_pStyle.contains("line2D")){
+        esBtnCam = new EleIconBtn(":/icon/resource/icon-line2D/disconnectDev.png",64,64,"点击以连接");
+        esBtnCam->setStatusIcon({":/icon/resource/icon-line2D/disconnectDev.png",
+                                 ":/icon/resource/icon-line2D/connectDev.png"},
+                                {"连接","断开连接"});
+        esBtnDMD = new EleIconBtn(":/icon/resource/icon-line2D/disconnectDev.png",64,64,"点击以连接DMD");
+        esBtnDMD->setStatusIcon({":/icon/resource/icon-line2D/disconnectDev.png",
+                                 ":/icon/resource/icon-line2D/connectDev.png"},
+                                {"连接DMD","断开连接DMD"});
+        esBtnMov = new EleIconBtn(":/icon/resource/icon-line2D/disconnectDev.png",64,64,"点击以连接");
+        esBtnMov->setStatusIcon({":/icon/resource/icon-line2D/disconnectDev.png",
+                                 ":/icon/resource/icon-line2D/connectDev.png"},
+                                {"连接","断开连接"});
+        esBtnPZT = new EleIconBtn(":/icon/resource/icon-line2D/disconnectDev.png",64,64,"点击以连接");
+        esBtnPZT->setStatusIcon({":/icon/resource/icon-line2D/disconnectDev.png",
+                                 ":/icon/resource/icon-line2D/connectDev.png"},
                                 {"连接","断开连接"});
     }
 

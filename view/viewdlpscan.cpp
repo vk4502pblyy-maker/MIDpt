@@ -12,7 +12,7 @@
 ViewDLPScan::ViewDLPScan(QWidget *parent)
     : QWidget{parent}
 {
-    m_pStyle = "gbl";
+    m_pStyle = "line2D";
     m_pcamInit = false;
 
     dmd = FuncDLP3500Ctl::getInstance();
@@ -56,12 +56,6 @@ ViewDLPScan::ViewDLPScan(QWidget *parent)
         btnImgForward = new EleIconBtn(":/icon/resource/icon-gbl/right-arr.png",128,128,"下一张照片");
         btnDir = new EleIconBtn(":/icon/resource/icon-gbl/openDir.png",64,64,"浏览文件夹");
         btnResultCalculate = new EleIconBtn(":/icon/resource/icon-gbl/analysis.png",128,128,"分析结果");
-//        btnStart = new EleIconBtn(":/icon/resource/icon-gbl/radar-off.png",64,64,"一键启动");
-//        btnStart->setStatusIcon({":/icon/resource/icon-gbl/radar-off.png",
-//                              ":/icon/resource/icon-gbl/radar.png"},
-//                              {"打开观测","关闭观测"},true,true);
-//        btnStop = new EleIconBtn(":/icon/resource/icon-gbl/stop-off.png",64,64,"停止检测");
-//        btnStop->setHoverIcon(":/icon/resource/icon-gbl/stop.png");
         btnStart = new PBtnToggle(":/icon/resource/icon-gbl/radar.png",":/icon/resource/icon-gbl/radar-off.png"
                                   ,128,128,"一键启动","一键停止");
         btnStop = new EleIconBtn(":/icon/resource/icon-gbl/stop-off.png",64,64,"停止检测");
@@ -69,6 +63,29 @@ ViewDLPScan::ViewDLPScan(QWidget *parent)
         btnStop->setVisible(false);
         btnAlbum = new PBtnSingleShot(":/icon/resource/icon-gbl/album-off.png",128,128,
                                       "查找图片",":/icon/resource/icon-gbl/album.png");
+    }
+    else if(m_pStyle.contains("line2D")){
+        btnCam = new EleIconBtn(":/icon/resource/icon-line2D/camera.png",64,64,"拍照并保存");
+        btnTriggerE = new EleIconBtn(":/icon/resource/icon-line2D/triggerEx.png",64,64,"外触发");
+        btnTriggerE->setToggleBtn(true);
+        btnTriggerI = new EleIconBtn(":/icon/resource/icon-line2D/triggerIn.png",64,64,"内触发");
+        btnTriggerI->setToggleBtn(true);
+        labelImgInFlash = new QLabel("0");
+        btnSetMin = new EleIconBtn(":/icon/resource/icon-line2D/currentPos.png",64,64,"设为当前位置为起点");
+        btnSetMax = new EleIconBtn(":/icon/resource/icon-line2D/currentPos.png",64,64,"设为当前位置为终点");
+        btnRecipeGen = new EleIconBtn(":/icon/resource/icon-line2D/saveDoc.png",64,64,"保存当前配置");
+        btnRecipeLoad = new EleIconBtn(":/icon/resource/icon-line2D/loadDoc.png",64,64,"加载配置");
+        btnImgBackward = new EleIconBtn(":/icon/resource/icon-line2D/left-arr.png",128,128,"上一张照片");
+        btnImgForward = new EleIconBtn(":/icon/resource/icon-line2D/right-arr.png",128,128,"下一张照片");
+        btnDir = new EleIconBtn(":/icon/resource/icon-line2D/openDir.png",64,64,"浏览文件夹");
+        btnResultCalculate = new EleIconBtn(":/icon/resource/icon-line2D/analysis.png",128,128,"分析结果");
+        btnStart = new PBtnToggle(":/icon/resource/icon-line2D/radar.png",":/icon/resource/icon-line2D/radar-off.png"
+                                  ,128,128,"一键启动","一键停止");
+        btnStop = new EleIconBtn(":/icon/resource/icon-line2D/stop-off.png",64,64,"停止检测");
+        btnStop->setHoverIcon(":/icon/resource/icon-line2D/stop.png");
+        btnStop->setVisible(false);
+        btnAlbum = new PBtnSingleShot(":/icon/resource/icon-line2D/album-off.png",128,128,
+                                      "查找图片",":/icon/resource/icon-line2D/album.png");
     }
 
     QHBoxLayout *layoutMain = new QHBoxLayout();

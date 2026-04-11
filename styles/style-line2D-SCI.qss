@@ -1,0 +1,148 @@
+/* =========================================
+   全局设定
+   匹配 #303c42 主色调，设定干净的背景
+========================================= */
+* {
+    font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+    font-size: 16px;
+    color: #303c42; /* 文字颜色与图标统一 */
+}
+
+/* 主窗口与基础面板背景：使用极浅的冷灰色，比纯白更护眼 */
+QMainWindow, QDialog, QWidget {
+    background-color: #F5F7FA;
+}
+
+/* 纯白色的内容区域背景，用于图表、数据表格等 */
+QTextEdit, QListView, QTreeView, QTableView, QGraphicsView {
+    background-color: #FFFFFF;
+    border: 1px solid #DCDFE6;
+    border-radius: 4px;
+    selection-background-color: #E4E8F0; /* 选中项使用浅蓝灰 */
+    selection-color: #303c42;
+}
+
+/* =========================================
+   工具栏 (QToolBar)
+   工业软件的核心操作区
+========================================= */
+QToolBar {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #E4E8F0;
+    padding: 2px;
+    spacing: 6px; /* 按钮之间的间距 */
+}
+
+/* 隐藏工具栏的虚线拖拽手柄，使其更现代 */
+QToolBar::handle {
+    image: none;
+}
+
+/* =========================================
+   工具按钮 (QToolButton) - 专门为你找的图标设计
+   去掉边框，仅在悬浮和按下时有平滑的底色反馈
+========================================= */
+QToolButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px; /* 圆角让细线风格更柔和 */
+    padding: 6px;
+    color: #303c42;
+}
+
+QToolButton:hover {
+    background-color: #EAF0F6; /* 悬浮时淡淡的蓝灰背景 */
+}
+
+QToolButton:pressed, QToolButton:checked {
+    background-color: #DDE4EC; /* 按下或选中时加深 */
+    /* 按下时稍微下沉的视觉效果 */
+    padding-top: 7px;
+    padding-bottom: 5px;
+}
+
+/* =========================================
+   常规按钮 (QPushButton)
+========================================= */
+QPushButton {
+    background-color: #FFFFFF;
+    border: 1px solid #DCDFE6;
+    border-radius: 4px;
+    padding: 6px 16px;
+    color: #303c42;
+}
+
+QPushButton:hover {
+    border-color: #303c42;
+    color: #303c42;
+    background-color: #F5F7FA;
+}
+
+QPushButton:pressed {
+    background-color: #E4E8F0;
+    border-color: #303c42;
+}
+
+/* 强调按钮 (例如: 开始检测 / 采集) */
+QPushButton#btnPrimary {
+    background-color: #303c42;
+    color: #FFFFFF;
+    border: none;
+}
+
+QPushButton#btnPrimary:hover {
+    background-color: #45555d; /* 稍微提亮 */
+}
+
+QPushButton#btnPrimary:pressed {
+    background-color: #242c31; /* 稍微变暗 */
+}
+
+/* =========================================
+   停靠窗口 (QDockWidget)
+   类似 Zygo 界面中常用的侧边属性栏和数据分析面板
+========================================= */
+QDockWidget {
+    color: #303c42;
+    font-weight: bold;
+    titlebar-close-icon: url(close_icon.png); /* 如果有图标可以替换 */
+    titlebar-normal-icon: url(float_icon.png);
+}
+
+QDockWidget::title {
+    background-color: #EAF0F6;
+    padding: 6px 10px;
+    border-bottom: 1px solid #DCDFE6;
+}
+
+/* =========================================
+   选项卡 (QTabWidget)
+========================================= */
+QTabWidget::pane {
+    border: 1px solid #DCDFE6;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    margin-top: -1px; /* 隐藏标签页与面板之间的双重边框 */
+}
+
+QTabBar::tab {
+    background-color: #F5F7FA;
+    border: 1px solid #DCDFE6;
+    border-bottom: none;
+    padding: 6px 16px;
+    margin-right: 2px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    color: #7b8a92;
+}
+
+QTabBar::tab:selected {
+    background-color: #FFFFFF;
+    color: #303c42;
+    font-weight: bold;
+    border-top: 2px solid #303c42; /* 顶部加粗的选中指示条 */
+}
+
+QTabBar::tab:hover:!selected {
+    background-color: #EAF0F6;
+}

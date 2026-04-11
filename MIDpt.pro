@@ -33,6 +33,7 @@ SOURCES += \
     function/functcpclient.cpp \
     function/functionmovement.cpp \
     function/functionmovesl.cpp \
+    function/rawimagestitcher.cpp \
     function/rawreader.cpp \
     function/storagethread.cpp \
     main.cpp \
@@ -67,6 +68,7 @@ HEADERS += \
     function/functcpclient.h \
     function/functionmovement.h \
     function/functionmovesl.h \
+    function/rawimagestitcher.h \
     function/rawreader.h \
     function/storagethread.h \
     mainwindow.h \
@@ -116,3 +118,8 @@ LIBS += -L$$PYLON_ROOT/lib/x64 \
         -lGenApi_MD_VC141_v3_1_Basler_pylon \
         -lPylonBase_v6_3 \
         -lPylonUtility_v6_3
+
+INCLUDEPATH += D:/opencv/opencv/build/include
+
+LIBS += -LD:/opencv/opencv/build/x64/vc15/lib \
+        -lopencv_world455d

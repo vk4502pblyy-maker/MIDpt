@@ -18,7 +18,7 @@ ViewFloatMovement::ViewFloatMovement(QWidget *parent)
     moveWM = FuncMoveWM::getInstance();
     pztEnable = false;
     moveEnable = false;
-    m_pStyle = "gbl";
+    m_pStyle = "line2D";
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     this->setLayout(mainLayout);
@@ -39,6 +39,9 @@ ViewFloatMovement::ViewFloatMovement(QWidget *parent)
     else if(m_pStyle.contains("gbl")){
         iconLocalPath += "icon-gbl/";
     }
+    else if(m_pStyle.contains("line2D")){
+        iconLocalPath += "icon-line2D/";
+    }
     btnPZTD = new EleIconBtn(iconLocalPath + "down-arr.png",64,64,"微动台下降");
     btnPZTU = new EleIconBtn(iconLocalPath + "up-arr.png",64,64,"微动台上升");
     btnXB   = new EleIconBtn(iconLocalPath + "left-arr.png",64,64,"X负向运动");
@@ -47,11 +50,10 @@ ViewFloatMovement::ViewFloatMovement(QWidget *parent)
     btnYF   = new EleIconBtn(iconLocalPath + "up-arr.png",64,64,"Y正向运动");
     btnZD   = new EleIconBtn(iconLocalPath + "downdown-3.png",64,64,"Z下降");
     btnZU   = new EleIconBtn(iconLocalPath + "upup-3.png",64,64,"Z上升");
-
-    btnMoveX    = new EleIconBtn(":/icon/resource/icon-N/iconPlay.png",64,64,"X点动");
-    btnMoveY    = new EleIconBtn(":/icon/resource/icon-N/iconPlay.png",64,64,"Y点动");
-    btnMoveZ    = new EleIconBtn(":/icon/resource/icon-N/iconPlay.png",64,64,"Z点动");
-    btnMovePZT  = new EleIconBtn(":/icon/resource/icon-N/iconPlay.png",64,64,"PZT点动");
+    btnMoveX    = new EleIconBtn(iconLocalPath + "play.png",64,64,"X点动");
+    btnMoveY    = new EleIconBtn(iconLocalPath + "play.png",64,64,"Y点动");
+    btnMoveZ    = new EleIconBtn(iconLocalPath + "play.png",64,64,"Z点动");
+    btnMovePZT  = new EleIconBtn(iconLocalPath + "play.png",64,64,"PZT点动");
 
     boxX = new QDoubleSpinBox;
     boxX->setRange(-10000000,10000000);
