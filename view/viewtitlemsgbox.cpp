@@ -24,51 +24,14 @@ ViewTitleMsgBox::ViewTitleMsgBox(QWidget *parent)
     layout1->addItem(new QSpacerItem(0,0,QSizePolicy::Expanding,QSizePolicy::Minimum));
     layout1->addWidget(btnClear);
 
-
-//    mainLayout->addWidget(new QLabel("消息栏"),0);
     listMsg = new QListWidget;
     listMsg->setWordWrap(true);
     listMsg->setResizeMode(QListWidget::Adjust);
-//    listMsg->setFixedHeight(120);
     mainLayout->addWidget(listMsg,1);
 
-//    QGridLayout *layoutBtns = new QGridLayout;
-//    mainLayout->addLayout(layoutBtns,0);
-//    labelPos = new QLabel("X:0      Y:0     Z:0     PZT:0");
-//    btnCamera = new EleIconBtn(":/icon/resource/icon-N/red-cir.png",64,64,"当前断开");
-//    btnCamera->setStatusIcon({":/icon/resource/icon-N/red-cir.png",
-//                              ":/icon/resource/icon-N/green-cir.png"},
-//                             {"当前断开","当前联通"},true,false);
-//    btnDMD = new EleIconBtn(":/icon/resource/icon-N/red-cir.png",64,64,"当前断开");
-//    btnDMD->setStatusIcon({":/icon/resource/icon-N/red-cir.png",
-//                              ":/icon/resource/icon-N/green-cir.png"},
-//                             {"当前断开","当前联通"},true,false);
-//    btnMove = new EleIconBtn(":/icon/resource/icon-N/red-cir.png",64,64,"当前断开");
-//    btnMove->setStatusIcon({":/icon/resource/icon-N/red-cir.png",
-//                              ":/icon/resource/icon-N/green-cir.png"},
-//                             {"当前断开","当前联通"},true,false);
-//    btnPZT = new EleIconBtn(":/icon/resource/icon-N/red-cir.png",64,64,"当前断开");
-//    btnPZT->setStatusIcon({":/icon/resource/icon-N/red-cir.png",
-//                              ":/icon/resource/icon-N/green-cir.png"},
-//                             {"当前断开","当前联通"},true,false);
-//    btnConfig = new EleIconBtn(":/icon/resource/icon-N/devConfig.png",64,64,"配置硬件连接");
-//    btnMovement = new EleIconBtn(":/icon/resource/icon-N/Basement.png",64,64,"呼出运动控制台");
 
-//    layoutBtns->addWidget(labelPos,0,0,1,6);
-//    layoutBtns->addWidget(new QLabel("相机"),1,0,1,1,Qt::AlignCenter);
-//    layoutBtns->addWidget(btnCamera,2,0,1,1);
-//    layoutBtns->addWidget(new QLabel("DMD"),1,1,1,1,Qt::AlignCenter);
-//    layoutBtns->addWidget(btnDMD,2,1,1,1);
-//    layoutBtns->addWidget(new QLabel("运动台"),1,2,1,1,Qt::AlignCenter);
-//    layoutBtns->addWidget(btnMove,2,2,1,1);
-//    layoutBtns->addWidget(new QLabel("PZT"),1,3,1,1,Qt::AlignCenter);
-//    layoutBtns->addWidget(btnPZT,2,3,1,1);
-//    layoutBtns->addWidget(btnConfig,2,4,1,1);
-//    layoutBtns->addWidget(btnMovement,2,5,1,1);
 
-//    connect(timeAcq,&QTimer::timeout,this,&ViewTitleMsgBox::onTimeAcqOut);
-//    connect(btnConfig,&EleIconBtn::clicked,this,&ViewTitleMsgBox::onFloatConfig);
-//    connect(btnMovement,&EleIconBtn::clicked,this,&ViewTitleMsgBox::onFloatMovement);
+
 }
 
 ViewTitleMsgBox::~ViewTitleMsgBox()
@@ -149,6 +112,11 @@ void ViewTitleMsgBox::onFloatMovement()
 
 void ViewTitleMsgBox::onFloatConfig()
 {
-//    emit sigFloatConfig();
+    //    emit sigFloatConfig();
+}
+
+void ViewTitleMsgBox::onDevInfo(QString msg)
+{
+    listMsg->addItem(msg);
 }
 #pragma execution_character_set(pop)

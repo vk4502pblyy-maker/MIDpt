@@ -145,9 +145,6 @@ void MainWindow::onRegistService(QString serviceName)
 void MainWindow::onMoveWMSerMsg(QString msg)
 {
     if(msg.contains("POS")){
-//        if(viewDLP4500Scan->isVisible()){
-//            viewDLP4500Scan->setPosMsg("WM",msg);
-//        }
         if(viewDLPScan->isVisible()){
             viewDLPScan->setPosMsg("WM",msg);
         }
@@ -310,16 +307,15 @@ void MainWindow::sigslotInit()
             this,&MainWindow::onInfo);
     connect(viewDLPScan,&ViewDLPScan::sigInfo,
             this,&MainWindow::onInfo);
+    connect(FuncDLP3500Ctl::getInstance(),&FuncDLP3500Ctl::sigInfo,
+            this,&MainWindow::onInfo);
+    connect(funcMoveWM,&FuncMoveWM::sigInfo,
+            this,&MainWindow::onInfo);
+    connect(funcMoveWM,&FuncMoveWM::sigNimServer,
+            this,&MainWindow::onMoveWMSerMsg);
+
 
     //DLP4500Scan
-//    connect(viewDLP4500Scan,&ViewDLP4500Scan::sigCheckDev,
-//            this,&MainWindow::oncheckDevStatus);
-//    connect(viewDLP4500Scan,&ViewDLP4500Scan::sigGrab,
-//            this,&MainWindow::onDlp4500ScanGrab);
-//    connect(viewDLP4500Scan,&ViewDLP4500Scan::sigStopScan,
-//            this,&MainWindow::onDlp4500ScanStop);
-//    connect(viewDLP4500Scan,&ViewDLP4500Scan::sigServiceReady,
-//            this,&MainWindow::onServiceReady);
     connect(viewDLPScan,&ViewDLPScan::sigCheckDev,
             this,&MainWindow::oncheckDevStatus);
     connect(viewDLPScan,&ViewDLPScan::sigGrab,

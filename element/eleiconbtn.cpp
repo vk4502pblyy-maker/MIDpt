@@ -92,14 +92,6 @@ void EleIconBtn::setToggleBtn(bool isToggle)
 void EleIconBtn::changeToggleStatus()
 {
     m_toggleStatus = !m_toggleStatus;
-//    if(m_toggleStatus){
-//        this->setStyleSheet("QPushButton{"
-//                            "background-color: #00D26A}");
-//    }
-//    else{
-//        this->setStyleSheet("QPushButton{"
-//                            "background-color: #F5F5F5}");
-//    }
 }
 
 bool EleIconBtn::getToggleStatus()

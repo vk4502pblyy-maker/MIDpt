@@ -158,6 +158,8 @@ ViewFloatMovement::ViewFloatMovement(QWidget *parent)
             this,&ViewFloatMovement::onBtnPZTU);
     connect(btnMovePZT,&EleIconBtn::clicked,
             this,&ViewFloatMovement::onBtnPZTMove);
+    connect(pzt,&FuncPZTCtl::sigPos,
+            this,&ViewFloatMovement::setPZTPos);
 }
 
 void ViewFloatMovement::setPosMsg(QString type, QString posMsg)
@@ -188,6 +190,7 @@ void ViewFloatMovement::setPosMsg(QString type, QString posMsg)
 void ViewFloatMovement::setPZTPos(double pos)
 {
     labelPZT->setText("PZT:"+QString::number(pos,'f',3)+";");
+    boxPZT->setValue(pos);
 }
 
 void ViewFloatMovement::setMoveEnable(QString nodes)

@@ -29,6 +29,7 @@ private slots:
     void onBtnShowAll();
     void onFloatMovement();
     void onFloatConfig();
+    void onDevInfo(QString msg);
 
 signals:
     void sigFloatMovement();

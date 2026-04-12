@@ -11,6 +11,7 @@
 #include <QListWidget>
 #include <QCloseEvent>
 #include "element/eleiconbtn.h"
+#include "element/pbtntoggle.h"
 
 
 #pragma execution_character_set(push, "utf-8")
@@ -46,10 +47,10 @@ private:
     void openMotor();
 
 private:
-    EleIconBtn    *esBtnDMD;
-    EleIconBtn    *esBtnCam;
-    EleIconBtn    *esBtnMov;
-    EleIconBtn    *esBtnPZT;
+    PBtnToggle    *esBtnDMD;
+    PBtnToggle    *esBtnCam;
+    PBtnToggle    *esBtnMov;
+    PBtnToggle    *esBtnPZT;
 
     QString m_pDMD;
     QString m_pCam;

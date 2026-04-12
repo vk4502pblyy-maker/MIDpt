@@ -232,6 +232,9 @@ ViewDLPScan::ViewDLPScan(QWidget *parent)
     connect(boxStop,QOverload<double>::of(&QDoubleSpinBox::valueChanged),
             this,&ViewDLPScan::onSpinValueChangeDouble);
 
+    connect(pzt,&FuncPZTCtl::sigPos,
+            this,&ViewDLPScan::setPZTPos);
+
     connect(&timerV30,&QTimer::timeout,this,&ViewDLPScan::onTimerScanV30Timeout);
 }
 

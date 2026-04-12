@@ -23,60 +23,16 @@ viewFloatConfig::viewFloatConfig(QWidget *parent)
     QGridLayout *mainLayout = new QGridLayout;
     this->setLayout(mainLayout);
 
-    if(m_pStyle == "N"){
-        esBtnCam = new EleIconBtn(":/icon/resource/icon-N/disconnectDev.png",64,64,"点击以连接");
-        esBtnCam->setStatusIcon({":/icon/resource/icon-N/disconnectDev.png",
-                                 ":/icon/resource/icon-N/connectDev.png"},
-                                {"连接","断开连接"});
-        esBtnDMD = new EleIconBtn(":/icon/resource/icon-N/disconnectDev.png",64,64,"点击以连接DMD");
-        esBtnDMD->setStatusIcon({":/icon/resource/icon-N/disconnectDev.png",
-                                 ":/icon/resource/icon-N/connectDev.png"},
-                                {"连接DMD","断开连接DMD"});
-        esBtnMov = new EleIconBtn(":/icon/resource/icon-N/disconnectDev.png",64,64,"点击以连接");
-        esBtnMov->setStatusIcon({":/icon/resource/icon-N/disconnectDev.png",
-                                 ":/icon/resource/icon-N/connectDev.png"},
-                                {"连接","断开连接"});
-        esBtnPZT = new EleIconBtn(":/icon/resource/icon-N/disconnectDev.png",64,64,"点击以连接");
-        esBtnPZT->setStatusIcon({":/icon/resource/icon-N/disconnectDev.png",
-                                 ":/icon/resource/icon-N/connectDev.png"},
-                                {"连接","断开连接"});
-    }
-    else if(m_pStyle.contains("gbl")){
-        esBtnCam = new EleIconBtn(":/icon/resource/icon-gbl/disconnectDev.png",64,64,"点击以连接");
-        esBtnCam->setStatusIcon({":/icon/resource/icon-gbl/disconnectDev.png",
-                                 ":/icon/resource/icon-gbl/connectDev.png"},
-                                {"连接","断开连接"});
-        esBtnDMD = new EleIconBtn(":/icon/resource/icon-gbl/disconnectDev.png",64,64,"点击以连接DMD");
-        esBtnDMD->setStatusIcon({":/icon/resource/icon-gbl/disconnectDev.png",
-                                 ":/icon/resource/icon-gbl/connectDev.png"},
-                                {"连接DMD","断开连接DMD"});
-        esBtnMov = new EleIconBtn(":/icon/resource/icon-gbl/disconnectDev.png",64,64,"点击以连接");
-        esBtnMov->setStatusIcon({":/icon/resource/icon-gbl/disconnectDev.png",
-                                 ":/icon/resource/icon-gbl/connectDev.png"},
-                                {"连接","断开连接"});
-        esBtnPZT = new EleIconBtn(":/icon/resource/icon-gbl/disconnectDev.png",64,64,"点击以连接");
-        esBtnPZT->setStatusIcon({":/icon/resource/icon-gbl/disconnectDev.png",
-                                 ":/icon/resource/icon-gbl/connectDev.png"},
-                                {"连接","断开连接"});
-    }
-    else if(m_pStyle.contains("line2D")){
-        esBtnCam = new EleIconBtn(":/icon/resource/icon-line2D/disconnectDev.png",64,64,"点击以连接");
-        esBtnCam->setStatusIcon({":/icon/resource/icon-line2D/disconnectDev.png",
-                                 ":/icon/resource/icon-line2D/connectDev.png"},
-                                {"连接","断开连接"});
-        esBtnDMD = new EleIconBtn(":/icon/resource/icon-line2D/disconnectDev.png",64,64,"点击以连接DMD");
-        esBtnDMD->setStatusIcon({":/icon/resource/icon-line2D/disconnectDev.png",
-                                 ":/icon/resource/icon-line2D/connectDev.png"},
-                                {"连接DMD","断开连接DMD"});
-        esBtnMov = new EleIconBtn(":/icon/resource/icon-line2D/disconnectDev.png",64,64,"点击以连接");
-        esBtnMov->setStatusIcon({":/icon/resource/icon-line2D/disconnectDev.png",
-                                 ":/icon/resource/icon-line2D/connectDev.png"},
-                                {"连接","断开连接"});
-        esBtnPZT = new EleIconBtn(":/icon/resource/icon-line2D/disconnectDev.png",64,64,"点击以连接");
-        esBtnPZT->setStatusIcon({":/icon/resource/icon-line2D/disconnectDev.png",
-                                 ":/icon/resource/icon-line2D/connectDev.png"},
-                                {"连接","断开连接"});
-    }
+    QString iconPathRoot = ":/icon/resource/icon-";
+
+    esBtnCam = new PBtnToggle(iconPathRoot+m_pStyle+"/connectDev.png",iconPathRoot+m_pStyle+"/disconnectDev.png",
+                              64,64,"点击以连接");
+    esBtnDMD = new PBtnToggle(iconPathRoot+m_pStyle+"/connectDev.png",iconPathRoot+m_pStyle+"/disconnectDev.png",
+                              64,64,"点击以连接");
+    esBtnMov = new PBtnToggle(iconPathRoot+m_pStyle+"/connectDev.png",iconPathRoot+m_pStyle+"/disconnectDev.png",
+                              64,64,"点击以连接");
+    esBtnPZT = new PBtnToggle(iconPathRoot+m_pStyle+"/connectDev.png",iconPathRoot+m_pStyle+"/disconnectDev.png",
+                              64,64,"点击以连接");
 
 
     mainLayout->addWidget(new QLabel("相 机"),0,0,1,1);
@@ -87,10 +43,10 @@ viewFloatConfig::viewFloatConfig(QWidget *parent)
     mainLayout->addWidget(esBtnPZT,2,1,1,1);
     mainLayout->addWidget(new QLabel("DMD"),3,0,1,1);
     mainLayout->addWidget(esBtnDMD,3,1,1,1);
-    connect(esBtnCam,&EleIconBtn::clicked,this,&viewFloatConfig::onBtnCam);
-    connect(esBtnDMD,&EleIconBtn::clicked,this,&viewFloatConfig::onBtnDMD);
-    connect(esBtnPZT,&EleIconBtn::clicked,this,&viewFloatConfig::onBtnPZT);
-    connect(esBtnMov,&EleIconBtn::clicked,this,&viewFloatConfig::onBtnMov);
+    connect(esBtnCam,&PBtnToggle::clicked,this,&viewFloatConfig::onBtnCam);
+    connect(esBtnDMD,&PBtnToggle::clicked,this,&viewFloatConfig::onBtnDMD);
+    connect(esBtnPZT,&PBtnToggle::clicked,this,&viewFloatConfig::onBtnPZT);
+    connect(esBtnMov,&PBtnToggle::clicked,this,&viewFloatConfig::onBtnMov);
 
 
 
@@ -126,7 +82,7 @@ void viewFloatConfig::onBtnDMD()
     int res = dlp->connectDMD();
     if(!res){
         emit sigInfo("DMD已连接");
-        esBtnDMD->changeStatus(1);
+        esBtnDMD->setChecked(true);
     }
     else{
         emit sigInfo("DMD连接失败");
@@ -141,7 +97,7 @@ void viewFloatConfig::onBtnDMD()
 
 void viewFloatConfig::onBtnCam()
 {
-    if(esBtnCam->getToggleStatus()){
+    if(esBtnCam->isChecked()){
         emit sigOpenCamera(0);
     }
     else{
@@ -152,9 +108,8 @@ void viewFloatConfig::onBtnCam()
 
 void viewFloatConfig::onBtnMov()
 {
-    if(esBtnMov->getToggleStatus()){
+    if(!esBtnMov->isChecked()){
         QMessageBox::information(this,"硬件设定","请关闭主程序断开硬件连接");
-        esBtnPZT->changeToggleStatus();
     }
     else{
         openMotor();
@@ -164,9 +119,8 @@ void viewFloatConfig::onBtnMov()
 
 void viewFloatConfig::onBtnPZT()
 {
-    if(esBtnPZT->getToggleStatus()){
+    if(!esBtnPZT->isChecked()){
         QMessageBox::information(this,"硬件设定","请关闭主程序断开硬件连接");
-        esBtnPZT->changeToggleStatus();
     }
     else{
         QStringList pztParams = m_pPZT.split(',');

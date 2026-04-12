@@ -135,7 +135,7 @@ int FuncPZTCtl::setPos(int channel, double pos)
 void FuncPZTCtl::startAcq(int channel)
 {
     Q_UNUSED(channel)
-    timeAcq.start(200);
+    timeAcq.start(500);
 }
 
 void FuncPZTCtl::stopAcq(int channel)
