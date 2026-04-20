@@ -145,7 +145,7 @@ void RawImgWidget::onBtnAlbum()
 
 void RawImgWidget::onBtnForward()
 {
-    if(boxIndex->value() == boxIndex->maximum()-1){
+    if(boxIndex->value() == boxIndex->maximum()){
         QMessageBox::information(this,"图片索引","已到达最后一张");
         return;
     }

@@ -173,12 +173,12 @@ void ViewFloatMovement::setPosMsg(QString type, QString posMsg)
             labelPos->setText(QString("X:--;Y:--;Z:%1;").arg(posList.at(1)));
             break;
         case 4:
-            labelPos->setText(QString("X:%1;Y:%2;Z:%1;")
+            labelPos->setText(QString("X:%1;Y:%2;Z:--;")
                                  .arg(posList.at(1)).arg(posList.at(3)));
             break;
         case 6:
-            labelPos->setText(QString("X:--;Y:--Z:%1;")
-                                 .arg(posList.at(1)).arg(posList.at(3)).arg(posList.at(5)));
+            labelPos->setText(QString("X:%1;Y:%2;Z:%3;")
+                                 .arg(posList.at(1)).arg(posList.at(5)).arg(posList.at(3)));
             break;
         default:
             break;

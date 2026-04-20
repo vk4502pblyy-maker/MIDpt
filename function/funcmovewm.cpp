@@ -27,8 +27,8 @@ int FuncMoveWM::openDev(QString comPort, quint16 port)
     if(wait4Server("CONNECT Nim Servo")){
         return -1;
     }
-//    tcpMove->sendMessage("InitDev_"+comPort);
-//    m_ComPort = comPort;
+    tcpMove->sendMessage("InitDev_"+comPort);
+    m_ComPort = comPort;
     return 0;
 }
 

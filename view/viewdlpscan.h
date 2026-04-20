@@ -53,6 +53,7 @@ signals:
     void sigStopScan();
     void sigCheckDev(QString viewName);
     void sigServiceReady(QString dirPath);
+    void sigServiceOver();
 
 private slots:
     void onBtnInit();
@@ -98,6 +99,9 @@ private:
     void setProcessLabel(QString text);
     void setProgessVid(int value);
     void refreshParas();
+
+    //测试进程
+    void testDMD();
 
 private:
     EleIconBtn  *btnInit;
@@ -150,7 +154,11 @@ private:
     int m_pImgInFlash;
     int m_pScanRowCur = 1;
     int m_pScanColumnCur = 1;
-    bool m_pcamInit;
+    int m_imgCount = 0;
+    int m_index = 0;
+    bool m_pcamInit = false;
+    bool m_checkDev = false;
+    bool m_serviceReady = false;
 
     int     m_pProgressCount = 0;
     int     m_pProgressCur = 0;

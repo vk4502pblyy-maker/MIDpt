@@ -28,10 +28,6 @@ MainWindow::MainWindow(QWidget *parent)
     viewTitleMsgBox = new ViewTitleMsgBox;
     ui->layoutMsgBox->addWidget(viewTitleMsgBox,0);
 
-//    viewDLP4500Scan = new ViewDLP4500Scan;
-//    viewDLP4500Scan->setObjectName("controlPanel");
-//    ui->layoutDLPC350Scan->addWidget(viewDLP4500Scan,1);
-
     viewDLPScan = new ViewDLPScan;
     viewDLPScan->setObjectName("controlPanel");
     ui->layoutDLPC350Scan->addWidget(viewDLPScan,1);
@@ -166,23 +162,27 @@ void MainWindow::oncheckDevStatus(QString viewName)
 {
     QString result = "";
 
+    //相机逻辑OK
     result += "camera:";
     result += m_cameraThread->getCameraOpen()? "true":"false";
     result += ";";
 
+    //PZT逻辑OK
     result += "pzt:";
     result += FuncPZTCtl::getInstance()->pztIsOpen()? "true":"false";
     result += ";";
 
+    //DMD逻辑OK
     result += "dmd:";
     result += FuncDLP3500Ctl::getInstance()->getIsInit()? "true":"false";
     result += ";";
 
+    //业务逻辑OK
+    viewTitleMsgBox->writeMsg(result);
     if(viewName == "ViewDLPScan"){
         if(!serviceCur.isEmpty()){
             result += "service:unavailable;";
         }
-//        viewDLP4500Scan->checkDevResult(result);
         viewDLPScan->checkDevResult(result);
         serviceCur = "DLPScan";
     }
@@ -190,13 +190,17 @@ void MainWindow::oncheckDevStatus(QString viewName)
 
 void MainWindow::onServiceReady(QString dirPath)
 {
-    if(serviceCur == "DLP4500Scan"){
+    if(serviceCur == "DLPScan"){
         QString timestamp = QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss");
         QString filePath = dirPath + QString("/DLP4500Scan_%1.raw").arg(timestamp);
         m_cameraThread->openStorage(filePath);
-//        viewDLP4500Scan->startService();
         viewDLPScan->startService();
     }
+}
+
+void MainWindow::onServiceOver()
+{
+    serviceCur.clear();
 }
 
 void MainWindow::onCameraOpened()
@@ -324,6 +328,8 @@ void MainWindow::sigslotInit()
             this,&MainWindow::onDlp4500ScanStop);
     connect(viewDLPScan,&ViewDLPScan::sigServiceReady,
             this,&MainWindow::onServiceReady);
+    connect(viewDLPScan,&ViewDLPScan::sigServiceOver,
+            this,&MainWindow::onServiceOver);
 }
 
 void MainWindow::initUI()

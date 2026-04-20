@@ -1,0 +1,4 @@
+oncheckDevStatus函数里DMD存在init标志位逻辑冗余
+ViewDLPScan这个类里stop被删掉以后start缺少停止交互
+ViewDLPScan这个类这个周期和曝光时间的这个交互有点反人类，建议改成ms，现在是us，改的时候记得dmdAddPatternAll也要改
+setProgessVid其实没加载动画呢，先不管了

@@ -107,7 +107,7 @@ int FuncPZTCtl::setPos(int channel, double pos)
     for(int i = 0;i<p[2]-1;i++)
     {
          tmpXor = tmpXor^p[i];
-         qDebug()<<"校验中..."<<tmpXor<<i<<p[i]<<"长度"<<p[2];
+//         qDebug()<<"校验中..."<<tmpXor<<i<<p[i]<<"长度"<<p[2];
     }
     Arr[longtmp-1] = tmpXor;
     if(pzt.isOpen())

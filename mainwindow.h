@@ -56,6 +56,7 @@ private slots:
 
     void oncheckDevStatus(QString viewName);
     void onServiceReady(QString dirPath);
+    void onServiceOver();
 
     // 相机状态/数据槽函数
     void onCameraOpened();

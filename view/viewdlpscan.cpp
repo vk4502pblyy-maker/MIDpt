@@ -259,12 +259,12 @@ int ViewDLPScan::setPosMsg(QString type, QString posMsg)
             labelPosCur->setText(QString("X:--;Y:--;Z:%1;").arg(posList.at(1)));
             break;
         case 4:
-            labelPosCur->setText(QString("X:%1;Y:%2;Z:--;")
+            labelPosCur->setText(QString("X:%1;Y:--;Z:%2;")
                                  .arg(posList.at(1)).arg(posList.at(3)));
             break;
         case 6:
-            labelPosCur->setText(QString("X:--;Y:--Z:%1;")
-                                 .arg(posList.at(1)).arg(posList.at(3)).arg(posList.at(5)));
+            labelPosCur->setText(QString("X:%1;Y:%2;Z:%3;")
+                                 .arg(posList.at(1)).arg(posList.at(5)).arg(posList.at(3)));
             break;
         default:
             break;
@@ -286,23 +286,30 @@ int ViewDLPScan::setPZTEnable()
 
 void ViewDLPScan::move2Next()
 {
-    double pos = pzt->getPos(0);
+    qDebug()<<"void ViewDLPScan::move2Next() start at Index"<<++m_index;
+    //拿高度值，设置进度，不用管
     m_pProgressCur++;
-    setProgessVid(m_pProgressCur);
+//    setProgessVid(m_pProgressCur);
 
+    //逐行扫描，每列到头就重置1换行
     if(m_pScanColumnCur == boxColumn->value()){
         m_pScanColumnCur = 1;
         m_pScanRowCur++;
+        qDebug()<<"Array:Row:"<<m_pScanRowCur<<"Column:"<<m_pScanColumnCur;
         emit sigInfo("DMD启动第"+QString::number(m_pScanRowCur)+"行开始："+QDateTime::currentDateTime().toString());
         setProcessLabel("当前在第："+QString::number(m_pScanRowCur)+"行");
     }
     else{
+        qDebug()<<"Array:Row:"<<m_pScanRowCur<<"Column:"<<m_pScanColumnCur;
         m_pScanColumnCur++;
     }
 
+    //单层扫完，判断位置，到位就停，不然就step下一个位置
     if(m_pScanRowCur>boxRow->value()){
+        qDebug()<<"change plane";
         m_pScanColumnCur = 1;
         m_pScanRowCur = 1;
+        double pos = pzt->getPos(0);
         if(pos >= boxStop->value()-0.05){
             stopScanV30();
             return;
@@ -317,16 +324,16 @@ void ViewDLPScan::checkDevResult(QString result)
     QStringList ress = result.split(';');
     QString res = ress.at(0) + ress.at(1) + ress.at(2);
     if(res.contains("false") || res.contains("unavailable")){
-        loopV30.exit(-1);
+        m_checkDev = false;
     }
     else{
-        loopV30.exit(0);
+        m_checkDev = true;
     }
 }
 
 void ViewDLPScan::startService()
 {
-    loopV30.exit(0);
+    m_serviceReady = true;
 }
 
 void ViewDLPScan::onBtnInit()
@@ -384,6 +391,7 @@ void ViewDLPScan::onBtnSetMax()
 
 void ViewDLPScan::onBtnStart()
 {
+//    testDMD();
     startScanV30();
 }
 
@@ -472,6 +480,7 @@ void ViewDLPScan::onBtnAlbum()
 
 void ViewDLPScan::onTimerScanV30Timeout()
 {
+    qDebug()<< "grab IMG："<<++m_imgCount;
     emit sigGrab();
 }
 
@@ -558,49 +567,74 @@ int ViewDLPScan::checkParameterScan()
 
 void ViewDLPScan::startScanV30()
 {
+    //非逻辑部分
     setProcessLabel("初始化");
     refreshParas();
     setProcessLabel("加载DMD内存");
     m_pImgInFlash = dmdLoadFlashImg();
     labelImgInFlash->setText(QString::number(m_pImgInFlash));
 
+    //软逻辑部分-交互参数检查
     int ret = checkDataV30();
     if(ret){
         return;
     }
 
+    //硬逻辑部分-检查硬件-已经脑测OK
     setProcessLabel("检查硬件连接");
     emit sigCheckDev("ViewDLPScan");
-    ret = loopV30.exec();
-    if(ret){
+    QElapsedTimer timer;
+    timer.start();
+    while(timer.elapsed()<200){
+        QCoreApplication::processEvents();
+    }
+    if(!m_checkDev){
         return;
     }
 
+    //锁UI和单点逻辑，没什么问题
+    setProcessLabel("进入起始位置");
     lockUIV30();
     ret = move2Start();
     if(ret){
         return;
     }
 
+    //进度动画计算
     int steps = int((boxStop->value()-boxStart->value())/boxStep->value());
     m_pProgressCount = steps*m_pImgInFlash;
-    m_pProcessVidCount = countVidFile("./process_vid/tree");
+    m_pProcessVidCount = countVidFile("./process_vid/rocket");
+
+    //包含DMD加载图片、传输图片、上使能
+    setProcessLabel("配置DMD");
     ret = startDMDV30();
     if(ret){
         return;
     }
 
+    //送到mainwindow，创建raw文件，打开raw存储
+    setProcessLabel("创建采集线程");
     emit sigServiceReady(lineSaveDir->text());
-    loopV30.exec();
+    timer.restart();
+    while(timer.elapsed()<1000){
+        if(m_serviceReady)
+            break;
+        QCoreApplication::processEvents();
+    }
 
-    timerV30.setInterval(boxPrd->value()/1000);
+
+    //先开DMD，然后错位开采集错位间隔是1/30周期
+    setProcessLabel("启动检测");
+    FuncPZTCtl::getInstance()->stopAcq(0);
+    int interval = int(boxPrd->value()/1000);
+    qDebug() << "Interval: " << interval;
+    timerV30.setInterval(interval);
     dmd->PatSeqCtrlStart();
-
-    QElapsedTimer timer;
-    timer.start();
+    timer.restart();
     while(timer.elapsed()<int(boxPrd->value()/30000))
         QCoreApplication::processEvents();
 
+    //时钟到了就拍照，已经脑测了
     setProcessLabel("当前扫描第1行");
     onTimerScanV30Timeout();
     timerV30.start();
@@ -661,11 +695,14 @@ int ViewDLPScan::startDMDV30()
 
 int ViewDLPScan::stopScanV30()
 {
+    qDebug()<<"int ViewDLPScan::stopScanV30()";
     timerV30.stop();
     dmd->PatSeqCtrlStop();
     emit sigStopScan();
     setProcessLabel("检测结束");
     emit sigInfo("检测结束"+QDateTime::currentDateTime().toString());
+    emit sigServiceOver();
+    FuncPZTCtl::getInstance()->startAcq(0);
     return 0;
 }
 
@@ -676,7 +713,7 @@ int ViewDLPScan::countVidFile(const QString &dirPath)
         qDebug() << "错误：图片文件夹不存在！路径：" << dirPath;
         return 0;
     }
-    int imgCount = imgDir.entryList(QDir::Files).count();
+    int imgCount = imgDir.entryList(QDir::Files).count()-2;
     return imgCount;
 }
 
@@ -704,7 +741,17 @@ void ViewDLPScan::setProgessVid(int value)
 void ViewDLPScan::refreshParas()
 {
     m_pProgressCur = 0;
-    m_pScanRowCur = 0;
-    m_pScanColumnCur = 0;
+    m_pScanRowCur = 1;
+    m_pScanColumnCur = 1;
+    m_imgCount = 0;
+    m_index = 0;
+}
+
+void ViewDLPScan::testDMD()
+{
+    m_pImgInFlash = dmdLoadFlashImg();
+    labelImgInFlash->setText(QString::number(m_pImgInFlash));
+    startDMDV30();
+    dmd->PatSeqCtrlStart();
 }
 #pragma execution_character_set(pop)

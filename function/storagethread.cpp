@@ -1,6 +1,8 @@
 #include "storagethread.h"
 #include <QDebug>
 #include <stdio.h>
+#include <QDateTime>
+#include <QDebug>
 
 StorageThread::StorageThread(QObject *parent)
     : QThread(parent),
@@ -59,6 +61,7 @@ void StorageThread::addFrame(const Pylon::CGrabResultPtr &grabResult)
         return; // 防爆内存
     }
 
+    qDebug()<<"m_queue.enqueue(grabResult):"<<QTime::currentTime().toString("HH:mm:ss.zzz");
     m_queue.enqueue(grabResult);
 
     // 【关键】：如果是单帧抓拍，收下这张后立马“关门”，保证只存一张
