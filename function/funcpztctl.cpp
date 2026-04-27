@@ -156,6 +156,8 @@ FuncPZTCtl::FuncPZTCtl(QObject *parent)
     tmp_command = std::make_unique<unsigned char[]>(256);
     recFlag = false;
     m_pPos = -1;
+    m_timeoutTimer.setSingleShot(true);
+    connect(&m_timeoutTimer, SIGNAL(timeout()), this, SLOT(onTimeout()));
     connect(&pzt,&QSerialPort::readyRead,this,&FuncPZTCtl::onReadReady);
     connect(&timeAcq,&QTimer::timeout,this,&FuncPZTCtl::onAcqTimeout);
 }
@@ -247,30 +249,140 @@ void FuncPZTCtl::SerSendArr(QByteArray tmpArr, int longData)
         Arr[i]= tmpArr[i];
     }
     //SerialUse->write(Arr);
-    pzt.write(tmpArr);
+    // 【修改前】：直接发送
+    //pzt.write(tmpArr);
+
+    // 【修改后】：压入队列，并尝试处理队列
+    m_cmdQueue.enqueue(Arr);
+    processQueue(); // 尝试触发发送
+
+
     QString hexMsguse = ByteArrayToHexString(tmpArr).toLatin1();
-//    qDebug()<<QString("Send ->  ")+hexMsguse.toUpper();
+    //    qDebug()<<QString("Send ->  ")+hexMsguse.toUpper();
 }
+
+void FuncPZTCtl::processQueue()
+{
+    // 如果正在等回复，或者队列里没指令了，就什么也不做
+    if (m_isWaiting || m_cmdQueue.isEmpty()) {
+        return;
+    }
+
+    // 取出第一条指令发送
+    QByteArray cmd = m_cmdQueue.dequeue();
+    m_isWaiting = true; // 上锁，告诉程序：现在正占用着串口呢，下一条等会再发
+    pzt.write(cmd);
+    // 【新增】：信发出去的同时，开始倒计时 100ms
+        m_timeoutTimer.start(100);
+}
+
+// 标准 Modbus RTU CRC16 校验算法
+quint16 FuncPZTCtl::crc16(const QByteArray &data, int len)
+{
+    quint16 crc = 0xFFFF;
+    for (int pos = 0; pos < len; pos++) {
+        crc ^= (quint8)data[pos];
+        for (int i = 8; i != 0; i--) {
+            if ((crc & 0x0001) != 0) {
+                crc >>= 1;
+                crc ^= 0xA001;
+            } else {
+                crc >>= 1;
+            }
+        }
+    }
+    return crc;
+}
+
+//void FuncPZTCtl::onReadReady()
+//{
+//    QByteArray message;
+//    message.append(pzt.readAll());
+//    size_t dataLen = message.size();
+//    if (dataLen > 256) {
+//        // 处理数据过长的情况，例如截断或报错
+//        dataLen = 256;
+//    }
+////    tmp_command = (unsigned char*)message.data();
+//    std::memcpy(tmp_command.get(), message.data(), dataLen);
+//    resCommand(tmp_command[3],tmp_command[4]);
+//    QString messageHex;
+//    messageHex = ByteArrayToHexString(message).toLatin1();
+////    qDebug()<< "REC -> "+messageHex;
+//}
 
 void FuncPZTCtl::onReadReady()
 {
-    QByteArray message;
-    message.append(pzt.readAll());
-    size_t dataLen = message.size();
-    if (dataLen > 256) {
-        // 处理数据过长的情况，例如截断或报错
-        dataLen = 256;
+    // 1. 把串口里刚收到的碎片全攒起来
+    m_readBuffer.append(pzt.readAll());
+
+    // 2. 循环处理缓存，直到不够一帧为止
+    while (m_readBuffer.size() >= 5)
+    {
+        // 找包头 0x01，如果头不对，就把第一个字节扔了继续找
+        if ((unsigned char)m_readBuffer[0] != 0x01) {
+            m_readBuffer.remove(0, 1);
+            continue;
+        }
+
+        // 获取功能码，决定这一帧该收多长
+        unsigned char funcCode = m_readBuffer[1];
+        int expectedLen = 0;
+
+        if (funcCode == 0x03) {
+            expectedLen = 9; // 协议：读位置返回 9 字节
+        } else if (funcCode == 0x10) {
+            expectedLen = 8; // 协议：写位置返回 8 字节
+        } else {
+            // 出现了意料之外的功能码，清除当前字节，重新对齐
+            m_readBuffer.remove(0, 1);
+            continue;
+        }
+
+        // 3. 判断攒够这一帧的长度了吗？
+        if (m_readBuffer.size() >= expectedLen) {
+            // 够了！把这完整的一包拿出来
+            QByteArray frame = m_readBuffer.left(expectedLen);
+            m_readBuffer.remove(0, expectedLen); // 从缓存里删掉已取走的
+
+            // 【新增】：在规定的时间内完整收到了，赶紧把看门狗关掉！
+            m_timeoutTimer.stop();
+
+            // --- 这里是你原本的解析逻辑 ---
+            if (funcCode == 0x03) {
+                // 读到的位置就在 frame 的第 3, 4, 5, 6 字节
+                double pos = calData(frame[3], frame[4], frame[5], frame[6]);
+                emit sigPos(pos);
+            }
+
+            // --- 重点：该指令处理完了，解锁并触发下一条排队指令 ---
+            m_isWaiting = false;
+            processQueue();
+        }
+        else {
+            // 长度还不够，说明数据还在路上，跳出循环等下次 readyRead
+            break;
+        }
     }
-//    tmp_command = (unsigned char*)message.data();
-    std::memcpy(tmp_command.get(), message.data(), dataLen);
-    resCommand(tmp_command[3],tmp_command[4]);
-    QString messageHex;
-    messageHex = ByteArrayToHexString(message).toLatin1();
-//    qDebug()<< "REC -> "+messageHex;
 }
 
 void FuncPZTCtl::onAcqTimeout()
 {
     getPos(0);
 
+}
+
+void FuncPZTCtl::onTimeout()
+{
+    // 如果 100ms 过去了，下位机还是没回（或者没回全）
+    // 强制解锁！不能让后续的指令被憋死
+    m_isWaiting = false;
+
+    // 把当前缓存里的残缺垃圾数据清空，防止污染下一条
+    m_readBuffer.clear();
+
+    // qDebug() << "通讯超时！强制丢弃并发送下一条";
+
+    // 赶紧发队列里排队的下一条指令
+    processQueue();
 }
