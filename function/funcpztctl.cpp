@@ -4,6 +4,7 @@
 #include <memory>
 #include <QCoreApplication>
 #include <QtMath>
+#include <QDateTime>
 
 QMutex FuncPZTCtl::mutex;
 QScopedPointer<FuncPZTCtl> FuncPZTCtl::instance;
@@ -32,7 +33,7 @@ int FuncPZTCtl::initPZT(QString port)
     {
         emit sigInfo("PZT INIT SUCCESS PORT:"+port);
         m_pIsOpen = true;
-        timeAcq.start(200);
+        timeAcq.start();
     }else
     {
         emit sigError("PZT INIT FAIL PORT:"+port);
@@ -43,47 +44,62 @@ int FuncPZTCtl::initPZT(QString port)
 
 double FuncPZTCtl::getPos(int channel)
 {
-    QByteArray Arr;
-    int longtmp = 7;
-    Arr.resize(longtmp);
-    Arr[0] = 0xaa;//默认包头
-    Arr[1] = 0x01;
-    Arr[2] = longtmp;//包长
-    Arr[3] = 0x06;//命令码 b3  05是开环 06是闭环
-    Arr[4] = 0x00;//命令码 b4
-    Arr[5] = channel;//通道号
-    //抑或校验
-    unsigned char tmpXor = 0x00;
-    unsigned char * p = (unsigned char *)Arr.data();//转化为unsigned char 的数据 以备抑或校验使用
-    for(int i = 0;i<p[2]-1;i++)
-    {
-         tmpXor = tmpXor^p[i];
-//         qDebug()<<"校验中..."<<tmpXor<<i<<p[i]<<"长度"<<p[2];
+    if(timeAcq.isActive()){
+        return m_pPos;
     }
-    Arr[longtmp-1] = tmpXor;
-    if(pzt.isOpen())
-    {
-        SerSendArr(Arr,longtmp);
-    }else
-    {
-        emit sigError("PORT NOT OPEN");
-        return -1;
+    else{
+        getPosI(channel);
+        return m_pPos;
     }
-    timerElp.restart();
-    while(timerElp.elapsed()<5000){
-        if(recFlag){
-            recFlag = false;
-            return m_pPos;
-        }
-        QCoreApplication::processEvents();
-    }
-    emit sigError("PZT Get Pos Time Out");
-    return -1;
+
+//    QByteArray Arr;
+//    int longtmp = 7;
+//    Arr.resize(longtmp);
+//    Arr[0] = 0xaa;//默认包头
+//    Arr[1] = 0x01;
+//    Arr[2] = longtmp;//包长
+//    Arr[3] = 0x06;//命令码 b3  05是开环 06是闭环
+//    Arr[4] = 0x00;//命令码 b4
+//    Arr[5] = channel;//通道号
+//    //抑或校验
+//    unsigned char tmpXor = 0x00;
+//    unsigned char * p = (unsigned char *)Arr.data();//转化为unsigned char 的数据 以备抑或校验使用
+//    for(int i = 0;i<p[2]-1;i++)
+//    {
+//         tmpXor = tmpXor^p[i];
+////         qDebug()<<"校验中..."<<tmpXor<<i<<p[i]<<"长度"<<p[2];
+//    }
+//    Arr[longtmp-1] = tmpXor;
+//    if(pzt.isOpen())
+//    {
+//        SerSendArr(Arr,longtmp);
+//    }else
+//    {
+//        emit sigError("PORT NOT OPEN");
+//        return -1;
+//    }
+//    timerElp.restart();
+//    while(timerElp.elapsed()<5000){
+//        if(recFlag){
+//            recFlag = false;
+//            return m_pPos;
+//        }
+//        QCoreApplication::processEvents();
+//    }
+//    return m_pPos;
+//    emit sigError("PZT Get Pos Time Out");
+//        return -1;
+}
+
+double FuncPZTCtl::getPosForce(int channel)
+{
+    getPosI(channel);
+    return m_pPos;
 }
 
 int FuncPZTCtl::setPos(int channel, double pos)
 {
-    qDebug()<<"PZT SET POS:"<<QString::number(pos);
+//    qDebug()<<"PZT SET POS:"<<QString::number(pos);
     QByteArray Arr;
     unsigned char kk[4];
     int longtmp = 11;
@@ -112,7 +128,12 @@ int FuncPZTCtl::setPos(int channel, double pos)
     Arr[longtmp-1] = tmpXor;
     if(pzt.isOpen())
     {
+        //这个指令是最高级的
+//        timeAcq.stop();
+//        m_readBuffer.clear();
+        m_cmdQueue.clear();
         SerSendArr(Arr,longtmp);
+//        timeAcq.start();
     }else
     {
         emit sigError("PORT NOT OPEN");
@@ -135,7 +156,7 @@ int FuncPZTCtl::setPos(int channel, double pos)
 void FuncPZTCtl::startAcq(int channel)
 {
     Q_UNUSED(channel)
-    timeAcq.start(500);
+    timeAcq.start();
 }
 
 void FuncPZTCtl::stopAcq(int channel)
@@ -157,6 +178,8 @@ FuncPZTCtl::FuncPZTCtl(QObject *parent)
     recFlag = false;
     m_pPos = -1;
     m_timeoutTimer.setSingleShot(true);
+    m_pInterval = 300;
+    timeAcq.setInterval(m_pInterval);
     connect(&m_timeoutTimer, SIGNAL(timeout()), this, SLOT(onTimeout()));
     connect(&pzt,&QSerialPort::readyRead,this,&FuncPZTCtl::onReadReady);
     connect(&timeAcq,&QTimer::timeout,this,&FuncPZTCtl::onAcqTimeout);
@@ -164,6 +187,7 @@ FuncPZTCtl::FuncPZTCtl(QObject *parent)
 
 FuncPZTCtl::~FuncPZTCtl()
 {
+    timeAcq.stop();
     pzt.close();
 }
 
@@ -250,7 +274,7 @@ void FuncPZTCtl::SerSendArr(QByteArray tmpArr, int longData)
     }
     //SerialUse->write(Arr);
     // 【修改前】：直接发送
-    //pzt.write(tmpArr);
+//    pzt.write(tmpArr);
 
     // 【修改后】：压入队列，并尝试处理队列
     m_cmdQueue.enqueue(Arr);
@@ -258,7 +282,47 @@ void FuncPZTCtl::SerSendArr(QByteArray tmpArr, int longData)
 
 
     QString hexMsguse = ByteArrayToHexString(tmpArr).toLatin1();
-    //    qDebug()<<QString("Send ->  ")+hexMsguse.toUpper();
+    qDebug()<<QString("Send ->  ")+hexMsguse.toUpper()<<QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
+}
+
+double FuncPZTCtl::getPosI(int channel)
+{
+    QByteArray Arr;
+    int longtmp = 7;
+    Arr.resize(longtmp);
+    Arr[0] = 0xaa;//默认包头
+    Arr[1] = 0x01;
+    Arr[2] = longtmp;//包长
+    Arr[3] = 0x06;//命令码 b3  05是开环 06是闭环
+    Arr[4] = 0x00;//命令码 b4
+    Arr[5] = channel;//通道号
+    //抑或校验
+    unsigned char tmpXor = 0x00;
+    unsigned char * p = (unsigned char *)Arr.data();//转化为unsigned char 的数据 以备抑或校验使用
+    for(int i = 0;i<p[2]-1;i++)
+    {
+         tmpXor = tmpXor^p[i];
+//         qDebug()<<"校验中..."<<tmpXor<<i<<p[i]<<"长度"<<p[2];
+    }
+    Arr[longtmp-1] = tmpXor;
+    if(pzt.isOpen())
+    {
+        SerSendArr(Arr,longtmp);
+    }else
+    {
+        emit sigError("PORT NOT OPEN");
+        return -1;
+    }
+    timerElp.restart();
+    while(timerElp.elapsed()<5000){
+        if(recFlag){
+            recFlag = false;
+            return m_pPos;
+        }
+        QCoreApplication::processEvents();
+    }
+    emit sigError("PZT Get Pos Time Out");
+    return -1;
 }
 
 void FuncPZTCtl::processQueue()
@@ -313,6 +377,7 @@ quint16 FuncPZTCtl::crc16(const QByteArray &data, int len)
 
 void FuncPZTCtl::onReadReady()
 {
+//    qDebug()<<"onReadReady() start:"<<QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
     // 1. 把串口里刚收到的碎片全攒起来
     m_readBuffer.append(pzt.readAll());
 
@@ -320,27 +385,37 @@ void FuncPZTCtl::onReadReady()
     while (m_readBuffer.size() >= 5)
     {
         // 找包头 0x01，如果头不对，就把第一个字节扔了继续找
-        if ((unsigned char)m_readBuffer[0] != 0x01) {
+        if ((unsigned char)m_readBuffer[1] != 0x01) {
             m_readBuffer.remove(0, 1);
             continue;
         }
 
         // 获取功能码，决定这一帧该收多长
-        unsigned char funcCode = m_readBuffer[1];
         int expectedLen = 0;
+        unsigned char sizeCode = m_readBuffer[2];
+        unsigned char funcCode = m_readBuffer[3];
+        if(funcCode == 0x06){
+           expectedLen = 11;
+        }
 
-        if (funcCode == 0x03) {
-            expectedLen = 9; // 协议：读位置返回 9 字节
-        } else if (funcCode == 0x10) {
-            expectedLen = 8; // 协议：写位置返回 8 字节
-        } else {
-            // 出现了意料之外的功能码，清除当前字节，重新对齐
+//        if (funcCode == 0x03) {
+//            expectedLen = 9; // 协议：读位置返回 9 字节
+//        } else if (funcCode == 0x10) {
+//            expectedLen = 8; // 协议：写位置返回 8 字节
+//        } else {
+//            // 出现了意料之外的功能码，清除当前字节，重新对齐
+//            m_readBuffer.remove(0, 1);
+//            continue;
+//        }
+        if (sizeCode != 0x0b){
+            //位数不对，返回
             m_readBuffer.remove(0, 1);
             continue;
         }
 
         // 3. 判断攒够这一帧的长度了吗？
-        if (m_readBuffer.size() >= expectedLen) {
+        int funcSize = m_readBuffer.size();
+        if (funcSize >= expectedLen) {
             // 够了！把这完整的一包拿出来
             QByteArray frame = m_readBuffer.left(expectedLen);
             m_readBuffer.remove(0, expectedLen); // 从缓存里删掉已取走的
@@ -349,10 +424,12 @@ void FuncPZTCtl::onReadReady()
             m_timeoutTimer.stop();
 
             // --- 这里是你原本的解析逻辑 ---
-            if (funcCode == 0x03) {
+            if (funcCode == 0x06) {
                 // 读到的位置就在 frame 的第 3, 4, 5, 6 字节
-                double pos = calData(frame[3], frame[4], frame[5], frame[6]);
-                emit sigPos(pos);
+                m_pPos = calData(frame[6], frame[7], frame[8], frame[9]);
+                recFlag = true;
+//                qDebug()<<"emit sigPos(m_pPos):"<<m_pPos<<":"<<QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
+                emit sigPos(m_pPos);
             }
 
             // --- 重点：该指令处理完了，解锁并触发下一条排队指令 ---
@@ -368,8 +445,8 @@ void FuncPZTCtl::onReadReady()
 
 void FuncPZTCtl::onAcqTimeout()
 {
-    getPos(0);
-
+//    qDebug()<<"getPosI(0):"<<QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
+    getPosI(0);
 }
 
 void FuncPZTCtl::onTimeout()

@@ -19,6 +19,7 @@ public:
     ~FuncPZTCtl();
     int                 initPZT(QString port);
     double              getPos(int channel);
+    double              getPosForce(int channel);
     int                 setPos(int channel, double pos);
     void                startAcq(int channel);
     void                stopAcq(int channel);
@@ -38,6 +39,7 @@ private:
     unsigned char*  DataAnla(double f,unsigned char kk[4]);
     QString         ByteArrayToHexString(QByteArray &ba);
     void            SerSendArr(QByteArray tmpArr,int longData);
+    double          getPosI(int channel);
 
     // 添加一个新的私有函数，用来处理队列
     void processQueue();
@@ -61,6 +63,7 @@ private:
     bool            recFlag;
     QElapsedTimer   timerElp;
     bool            m_pIsOpen = false;
+    int             m_pInterval = 300;
 
     QQueue<QByteArray> m_cmdQueue;          // 指令队列
     bool               m_isWaiting = false; // 状态机：当前是否正在等待设备回复

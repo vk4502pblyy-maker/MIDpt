@@ -218,6 +218,20 @@ int FuncDLP3500Ctl::PatSeqCtrlStart()
     return 0;
 }
 
+int FuncDLP3500Ctl::PatSeqCtrlPause()
+{
+    int res = dlpc350.DLPC350_PatternDisplay(1);
+    emit sigInfo("DLPC350_PatternDisplay(1):"+QString::number(res));
+    return 0;
+}
+
+int FuncDLP3500Ctl::PatSeqCtrlStep()
+{
+    int res = dlpc350.DLPC350_PatternDisplay(3);
+    emit sigInfo("DLPC350_PatternDisplay(3):"+QString::number(res));
+    return 0;
+}
+
 int FuncDLP3500Ctl::clearPatSeq()
 {
     m_pPatSeqList.clear();

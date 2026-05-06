@@ -33,10 +33,13 @@ public:
     int setPZTPos(double pos);
     int setPZTEnable();
 
-    //新版扫描V30
+    //新版扫描V30&V31通用
     void move2Next();
     void checkDevResult(QString result);
     void startService();
+
+    //新版扫描V31通用
+    void move2NextV31();
 
 public slots:
     void onCamImgBack(int camNum,QImage img);
@@ -47,7 +50,9 @@ signals:
     void sigInitCamera(int camNum);
     void sigRegistService(QString serviceName);
 
-    //新版扫描V30
+    void sigCamExp(double exp);
+
+    //新版扫描V30&V31通用
     void sigGrab();
     void sigParaList(QStringList datas);
     void sigStopScan();
@@ -73,6 +78,8 @@ private slots:
 
     //新版扫描V30
     void onTimerScanV30Timeout();
+    //新版扫描V30
+    void onTimerScanTimeoutV31();
 
 private:
     int dmdInit();
@@ -86,7 +93,7 @@ private:
 
     int checkParameterScan(); // 供 V30 检查参数使用
 
-    //新版扫描V30
+    //新版扫描V30&V31通用
     void startScanV30();
     int checkDataV30();
     QStringList setParaStrList();
@@ -100,8 +107,13 @@ private:
     void setProgessVid(int value);
     void refreshParas();
 
-    //测试进程
-    void testDMD();
+    //新版扫描V31
+    void startScanV31();
+    int startDMDV31();
+    int stopScanV31();
+    int dmdAddPatternAllV31();
+
+
 
 private:
     EleIconBtn  *btnInit;
@@ -144,6 +156,8 @@ private:
     QTimer  timerCamAcq;
     QImage  m_pImg;
 
+    QTimer timerScan;
+
     QString m_pScanDirPathRaw;
     QString m_pScanDirPathCur;
 
@@ -168,6 +182,17 @@ private:
     QEventLoop loopV30;
     QTimer timerV30;
     int m_pProcessVidCount;
+
+//测试部分
+private:
+    //测试进程
+    void testDMD();
+    void testDMDStop();
+
+    QPushButton *btnTestDMD = nullptr;
+
+private slots:
+    void onBtnTestDMD();
 };
 
 #endif // VIEWDLPSCAN_H

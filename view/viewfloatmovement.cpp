@@ -246,7 +246,7 @@ void ViewFloatMovement::onBtnPZTU()
     pzt->setPos(0,pos+boxStepPZT->value());
     setStepBtnsEnabled(false);
     etimerStepBtns.restart();
-    while(etimerStepBtns.elapsed()<50){
+    while(etimerStepBtns.elapsed()<200){
         QCoreApplication::processEvents();
     }
     setStepBtnsEnabled(true);
@@ -262,7 +262,7 @@ void ViewFloatMovement::onBtnPZTD()
     pzt->setPos(0,pos-boxStepPZT->value());
     setStepBtnsEnabled(false);
     etimerStepBtns.restart();
-    while(etimerStepBtns.elapsed()<50){
+    while(etimerStepBtns.elapsed()<200){
         QCoreApplication::processEvents();
     }
     setStepBtnsEnabled(true);

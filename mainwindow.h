@@ -77,6 +77,8 @@ private slots:
     void onDlp4500ScanGrab();
     void onDlp4500ScanStop();
 
+    void onCamExp(double exp);
+
 
 private:
     void devInit();

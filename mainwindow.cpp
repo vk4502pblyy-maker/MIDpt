@@ -277,7 +277,12 @@ void MainWindow::onDlp4500ScanGrab()
 {
     m_cameraThread->triggerSnapshot();
 //    viewDLP4500Scan->move2Next();
+
+    //V30版本
     viewDLPScan->move2Next();
+
+    //V31版本
+//    viewDLPScan->move2NextV31();
 }
 
 void MainWindow::onDlp4500ScanStop()
@@ -285,6 +290,11 @@ void MainWindow::onDlp4500ScanStop()
     m_cameraThread->closeStorage();
     viewTitleMsgBox->writeMsg("正在停止相机并等待剩余数据落盘...");
 
+}
+
+void MainWindow::onCamExp(double exp)
+{
+    m_cameraThread->setExposureTime(exp);
 }
 
 void MainWindow::devInit()
@@ -319,7 +329,7 @@ void MainWindow::sigslotInit()
             this,&MainWindow::onMoveWMSerMsg);
 
 
-    //DLP4500Scan
+    //DLPScan
     connect(viewDLPScan,&ViewDLPScan::sigCheckDev,
             this,&MainWindow::oncheckDevStatus);
     connect(viewDLPScan,&ViewDLPScan::sigGrab,
@@ -330,6 +340,9 @@ void MainWindow::sigslotInit()
             this,&MainWindow::onServiceReady);
     connect(viewDLPScan,&ViewDLPScan::sigServiceOver,
             this,&MainWindow::onServiceOver);
+    connect(viewDLPScan,&ViewDLPScan::sigCamExp,
+            this,&MainWindow::onCamExp);
+
 }
 
 void MainWindow::initUI()

@@ -60,6 +60,8 @@ public:
     int ValidatePatSeq();
     int PatSeqCtrlStop();
     int PatSeqCtrlStart();
+    int PatSeqCtrlPause();
+    int PatSeqCtrlStep();
     int clearPatSeq();
 
     void    setInitFlag(bool flag);
